@@ -1,7 +1,7 @@
 module.exports = function(sequelize, Sequelize, Athlete, AthleticsType, Rank, Сompetition, Appearence) {
 
     var AthleteCard = sequelize.define('athlete_card', {
-        current_result: { type: Sequelize.DATE, allowNull: false}
+        current_result: { type: Sequelize.STRING}
     });
 
     AthleteCard.belongsTo(Athlete, {foreignKey: 'athlete_id'});

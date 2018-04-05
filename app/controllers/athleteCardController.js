@@ -10,28 +10,25 @@ exports.get = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
 
-    console.log('Get athletes');
-    var tableHead = ['Имя', 'Отчество', 'Фамилия', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер'];
-    console.log(user.id);
+    console.log('Get athleteCards');
+    var tableHead = ['Соревнование', 'Спортсмен', 'Вид спорта', 'Лучший результат', 'Разряд'];
+    
     if (agent) {
-        db.getAgentAthletes(user.id).then(athletes => {
+        db.getAgentAthleteCards(user.id).then(athleteCards => {
             var outAthletes = [];
-            athletes.forEach(function(athlete) {
+            athleteCards.forEach(function(athleteCard) {
                 outAthletes.push({
-                    id: athlete.id,
-                    number: athlete.number,
-                    firstname: athlete.first_name,
-                    middlename: athlete.middle_name,
-                    lastname: athlete.last_name,
-                    birthday: athlete.birthday,
-                    coach: athlete.coach,
-                    gender: athlete.gender_type.gender_type,
-                    city: athlete.city.name,
+                    id: athleteCard.id,
+                    competition: athleteCard.competition.name,
+                    athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athlete.middle_name.charAt(0) + ".",
+                    athletics: athleteCard.athletics_type.name,
+                    result: athleteCard.current_result,
+                    rank: athleteCard.rank.name
                 });
             });
 
-            res.render('athletes.hbs', {
-                title: 'Спортсмены',
+            res.render('athlete_card.hbs', {
+                title: 'Карточки спортсменов',
                 tableHead: tableHead,
                 athletes: outAthletes,
                 username: user.email,
@@ -56,14 +53,29 @@ exports.getOptions = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
     if (agent) {
-        db.getGenders().then(genders => {
-            db.getCities().then(cities => {
-                var data = {};
-                data.genders = genders;
-                data.cities = cities;
-                res.status(200);
-                res.setHeader("Content-Type", "application/json");
-                res.send(JSON.stringify(data));
+        db.getAgentAthletes(user.id).then(athletes => {
+            db.getCompetitions().then(competitions => {
+                db.getAthleticsTypes().then(athletics => {
+                    db.getRank().then(ranks => {
+                        db.getAppearence().then(appearences => {
+                            var data = {};
+                            data.athletes = athletes;
+                            data.competitions = competitions;
+                            data.athletics = athletics;
+                            data.ranks = ranks;
+                            data.appearences = appearences;
+                            res.status(200);
+                            res.setHeader("Content-Type", "application/json");
+                            res.send(JSON.stringify(data));
+                        }).catch(() => {
+                            res.sendStatus(500)
+                        });
+                    }).catch(() => {
+                        res.sendStatus(500)
+                    });
+                }).catch(() => {
+                    res.sendStatus(500)
+                });
             }).catch(() => {
                 res.sendStatus(500)
             });
@@ -93,31 +105,6 @@ exports.change = function(req, res) {
     console.log('-------------------------           ' + req.body.id);
     if (agent) { returnAthlete(db.changeAthlete(req.body.object, req.body.id, user.id), res); }
     
-}
-
-exports.getOptions = function(req, res) {
-    var user = req.user;
-    var role = user.role;
-    var admin = false, judge = false, agent = false;
-    if(role == 'admin') { admin = true; }
-    if(role == 'judge') { judge = true; }
-    if(role == 'agent') { agent = true; }
-    if (agent) {
-        db.getGenders().then(genders => {
-            db.getCities().then(cities => {
-                var data = {};
-                data.genders = genders;
-                data.cities = cities;
-                res.status(200);
-                res.setHeader("Content-Type", "application/json");
-                res.send(JSON.stringify(data));
-            }).catch(() => {
-                res.sendStatus(500)
-            });
-        }).catch(() => {
-            res.sendStatus(500)
-        });
-    }
 }
 
 exports.delete = function(req, res) {

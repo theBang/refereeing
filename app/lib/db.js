@@ -10,38 +10,28 @@ exports.getUsers = function(){
     return getObjects(models.user);
 };
 
-exports.getCompete = function(){
-    return getObjects(models.competition);
-};
-
-exports.getAgentAthletes = function(user_id){
-    return new Promise ((resolve, reject) => {
-        models.sequelize.sync().then(() => {
-            models.athlete.findAll({
-                where: { user_id: user_id },
-                include: [
-                    { model: models.gender_type },
-                    { model: models.city }
-                ]
-            }).then(objects => {
-                if (objects) {
-                    resolve(objects);
-                }
-                reject([]);
-            })
-        })
-        .catch(()=> {
-            reject([]);
-        })
-    });
-};
-
 exports.getGenders = function(){
     return getObjects(models.gender_type);
 };
 
 exports.getCities = function(){
     return getObjects(models.city);
+};
+
+exports.getCompetitions = function(){
+    return getObjects(models.competition);
+};
+
+exports.getAthleticsTypes = function(){
+    return getObjects(models.athletics_type);
+};
+
+exports.getRank = function(){
+    return getObjects(models.rank);
+};
+
+exports.getAppearence = function(){
+    return getObjects(models.appearence);
 };
 
 exports.getGenderById = function(id){
@@ -96,8 +86,31 @@ exports.addAthlete = function (params, user_id) {
     })
 };
 
+exports.getAgentAthletes = function(user_id){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            models.athlete.findAll({
+                where: { user_id: user_id },
+                include: [
+                    { model: models.gender_type },
+                    { model: models.city }
+                ]
+            }).then(objects => {
+                if (objects) {
+                    resolve(objects);
+                }
+                reject([]);
+            })
+        })
+        .catch(()=> {
+            reject([]);
+        })
+    });
+};
+
 exports.deleteAthlete = function (delete_id, user_id) {
     return new Promise ((resolve, reject) => {
+        console.log('---------------------')
         getObjectById(models.athlete, delete_id).then(athlete => {
             if(athlete.user_id == user_id) {
                 models.athlete.destroy({
@@ -157,6 +170,29 @@ exports.changeAthlete = function (params, change_id, user_id) {
         .catch(()=> {
             reject({});
         });
+    });
+};
+
+exports.getAgentAthleteCards = function(user_id){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            models.athlete_card.findAll({
+                include: [
+                    { model: models.athlete, where: { user_id: user_id }},
+                    { model: models.competition },
+                    { model: models.athletics_type },
+                    { model: models.rank }
+                ]
+            }).then(objects => {
+                if (objects) {
+                    resolve(objects);
+                }
+                reject([]);
+            })
+        })
+        .catch(()=> {
+            reject([]);
+        })
     });
 };
 

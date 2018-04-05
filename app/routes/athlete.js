@@ -1,5 +1,4 @@
 var athleteController = require('../controllers/athleteController');
-var bodyParser = require('body-parser');
  
 module.exports = function(app) {
     app.get('/athlete', isLoggedIn, athleteController.get);

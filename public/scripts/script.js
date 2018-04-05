@@ -13,7 +13,7 @@
 			tNum = 1; 
 			break;
 			
-		case 'addAthleteCards.html':
+		case 'athletecard':
 			tNum = 2; 
 			break;
 			
@@ -75,39 +75,39 @@
 						}
 					}
 					if ( tNum == 2) {
-						console.log('222');
-						$('.competitions').empty();
+						console.log(data);
+						$('.competition').empty();
 						$('.athlete').empty();
 						$('.athleticsType').empty();
 						$('.rank').empty();
 						$('.appearences').empty();
 						
-						var arr = response.split('/');
 						//селект соревнований
-						arr1 =  arr[0].split(' ');
-						//селект сопртсменов
-						arr2 =  arr[1].split(' ');
+						var competitions = data.competitions;
+						//селект спортсменов
+						var athletes = data.athletes;
 						//селект вида
-						arr3 =  arr[2].split(' ');
+						var athletics = data.athletics;
 						//селект разряда
-						arr4 =  arr[2].split(' ');
+						var ranks = data.ranks;
 						//селект лично там не лично
-						arr4 =  arr[2].split(' ');
+						var appearences = data.appearences;
+						console.log(athletes[0].first_name);
 						var i;
-						for(i = 0; i < arr.length - 1; i++) {				
-							$(".competitions'").append( $("<option value= '" + arr1[i] + "'>" + arr1[i] + "</option>'"));
+						for(i = 0; i < competitions.length; i++) {				
+							$(".competition").append( $("<option value= '" + competitions[i].id + "'>" + competitions[i].name + "</option>'"));
 						}
-						for(i = 0; i < arr.length - 1; i++) {				
-							$(".athlete").append( $("<option value= '" + arr2[i] + "'>" + arr2[i] + "</option>'"));
+						for(i = 0; i < athletes.length; i++) {				
+							$(".athlete").append( $("<option value= '" + athletes[i].id + "'>" + athletes[i].last_name + " " + athletes[i].first_name.charAt(0) + "." + athletes[i].middle_name.charAt(0) +  ".</option>'"));
 						}
-						for(i = 0; i < arr.length - 1; i++) {				
-							$(".athleticsType").append( $("<option value= '" + arr3[i] + "'>" + arr3[i] + "</option>'"));
+						for(i = 0; i < athletics.length; i++) {				
+							$(".athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].name + "</option>'"));
 						}
-						for(i = 0; i < arr.length - 1; i++) {				
-							$(".rank").append( $("<option value= '" + arr4[i] + "'>" + arr3[i] + "</option>'"));
+						for(i = 0; i < ranks.length; i++) {				
+							$(".rank").append( $("<option value= '" + ranks[i].id + "'>" + ranks[i].name + "</option>'"));
 						}
-						for(i = 0; i < arr.length - 1; i++) {				
-							$(".appearences").append( $("<option value= '" + arr5[i] + "'>" + arr3[i] + "</option>'"));
+						for(i = 0; i < appearences.length; i++) {				
+							$(".appearences").append( $("<option value= '" + appearences[i].id + "'>" + appearences[i].name + "</option>'"));
 						}
 					}
 				}

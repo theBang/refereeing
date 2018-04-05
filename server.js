@@ -38,7 +38,7 @@ var orgRoute = require('./app/routes/org')(app);
 var usersRoute = require('./app/routes/users')(app);
 var mainRoute = require('./app/routes/main')(app);
 var athleteRoute = require('./app/routes/athlete')(app);
-
+var athleteCardRoute = require('./app/routes/athleteCard')(app);
 //Load passport strategies
 require('./app/config/passport/passport')(passport, models.user, models.organization);
 
@@ -46,6 +46,13 @@ require('./app/config/passport/passport')(passport, models.user, models.organiza
 models.sequelize.sync().then(function() {
     /*models.city.create({
         name: 'Пермь'
+    });*/
+    /*models.appearence.create({
+        name: 'В команде'
+    }).then(() => {
+        models.appearence.create({
+            name: 'Лично'
+        });
     });*/
     console.log(' ');
     console.log('Nice! Database looks fine');

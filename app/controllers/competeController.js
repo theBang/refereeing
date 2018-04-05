@@ -18,7 +18,7 @@ exports.get = function(req, res) {
                     'Категория секретаря',
                     'Действие'];
 
-    db.getCompete()
+    db.getCompetitions()
         .then(competitions => {
             res.render('competitions.hbs', {
                 title: 'Соревнования',
