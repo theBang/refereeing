@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+
+    <title>{{title}}</title>
+    </head>
+    <body>
+        {{> menu_signed}}
+        <div id="dataform-wrapper">
+            <div id="dataForm">               
+                <form id="my_form">
+                    <div class="form-group">
+                    <legend class="m-b-1">Добавить спортсмена</legend>
+                        <div class="form-group ">
+                            <label for="last">Фамилия</label>
+                                <input class="form-control" id="last" type="text" placeholder="Фамилия"/>
+                            <label for="first">Имя</label>
+                                <input class="form-control" id="first" type="text" placeholder="Имя"/>
+                            <label for="middle">Отчество</label>
+                                <input class="form-control" id="middle" type="text" placeholder="Отчество"/>     
+
+                                <label for="birthday">Дата рождения</label>
+                                <input type="date" class="form-control">
+
+                            <label for="sex">Пол</label>
+                            <select class="form-control sex">
+
+                            </select>
+                        </div>
+                        <div class="form-group">               
+                            <label for="coach">ФИО тренера</label>    
+                                <input class="form-control" id="coach" type="text" placeholder="ФИО тренера"/>
+                            <label for="city">Город</label>
+                            <select class="form-control city">
+                                                                 
+                            </select>
+                            <label for="number">Номер участника</label>
+                            <input class="form-control" id="number" type="text" placeholder="Номер участника"/>
+                        </div>                             
+                    </div>
+                    <input class = "btn btn-primary" id="addRow" type="button" value="Добавить"/>
+                    <input class = "btn btn-primary" id="changeRow" type="button" value="Изменить" />
+                    <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена" />
+                </form>
+            </div> 
+        </div>
+        <div id="overlay"></div>  
+        <div id="wrapper">            
+            {{> table_nav}}
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <h1>{{title}}</h1>
+                    <p>Спортсмены</p>     
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                    <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                        <div class="div-table">
+                            <table class="table table-hover"  id = "table">
+                                <thead>
+                                    <tr>
+                                    {{#each tableHead}}
+                                        <th>{{this}}</th>
+                                    {{/each}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each athletes}}
+                                        <tr data-id="{{this.id}}">
+                                            <td>{{this.firstname}}</td>
+                                            <td>{{this.middlename}}</td>
+                                            <td>{{this.lastname}}</td>
+                                            <td>{{this.birthday}}</td>
+                                            <td>{{this.gender}}</td>
+                                            <td>{{this.coach}}</td>
+                                            <td>{{this.city}}</td>
+                                            <td>{{this.number}}</td>
+                                            <td>
+                                                <button class="btn btn-primary changeRow">Изменить</button>
+                                                <button class="btn btn-danger deleteRow">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                    <tr>
+                                        <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>                            
+        {{> script}}
+    </body>
+</html>

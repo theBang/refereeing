@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <title>{{title}}</title>
+  </head>
+  <body>
+        {{> menu_signed}}
+        <div id="wrapper">            
+                {{> table_nav}}
+             
+                <div id="page-content-wrapper">
+                    <div class="container-fluid">
+                        <h1>{{title}}</h1>
+                        <p>Тут какое то интересное описание</p>                        
+                        <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Список таблиц</a>
+                            <div class="div-table">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                        {{#each tableHead}}
+                                            <th>{{this}}</th>
+                                        {{/each}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each users}}
+                                            <tr>
+                                                <td>{{this.id}}</td>
+                                                <td>{{this.email}}</td>
+                                                <td>{{this.firstname}}</td>
+                                                <td>{{this.lastname}}</td>
+                                                <td>{{this.role}}</td>
+                                                <td>
+                                                    <button class="btn btn-primary" type="submit">Изменить</button>
+                                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        <tr>
+                                            <td><button class="btn btn-primary" type="submit">Добавить</button></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>              
+        
+            </div>           
+                           
+            {{> script}}
+
+    </body>
+</html>

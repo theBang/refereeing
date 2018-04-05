@@ -1,0 +1,33 @@
+{
+    "development": {
+        "username": "sport_app",
+        "password": "1",
+        "database": "sport_app_db",
+        "host": "127.0.0.1",
+        "dialect": "mssql",
+        "operatorsAliases": false,
+  
+        "pool": {
+            "max": 5,
+            "min": 0,
+            "acquire": 30000, 
+            "idle": 10000
+        }
+    },
+
+    "test": {
+        "username": "sport_app",
+        "password": "1",
+        "database": "sport_app_db",
+        "host": "127.0.0.1",
+        "dialect": "mssql"
+    },
+
+    "production": {
+        "username": "sport_app",
+        "password": "1",
+        "database": "sport_app_db",
+        "host": "127.0.0.1",
+        "dialect": "mssql"
+    }
+}

@@ -1,0 +1,46 @@
+<nav class="navbar navbar-default">
+            <div class="container">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">REFEREEING OF TRACK AND FIELD</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="navbar-collapse-2">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Главная<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Стартовые протоколы</a></li>
+                                    <li><a href="#">Итоговые протоколы</a></li>
+                                    <li><a href="#">Положения соревнований</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li><a href="#">Контакты</a></li>
+                            <li><a href="/signup">Регистрация</a></li>
+                            <li>
+                            <a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2">Войти</a>
+                            </li>
+                        </ul>
+                    <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse2">
+                    <form class="navbar-form navbar-right form-inline" role="form"  id="signin" name="signin" method="post" action="/signin">
+                    <div class="form-group">
+                    <label class="sr-only" for="Email">Email</label>
+                    <input type="email" class="form-control" id="Email" placeholder="Email" name="email" autofocus required />
+                    </div>
+                    <div class="form-group">
+                    <label class="sr-only" for="Password">Password</label>
+                    <input type="password" class="form-control" id="Password" placeholder="Пароль" name="password" required />
+                    </div>
+                    <button type="submit" class="btn btn-success">Войти</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </nav>

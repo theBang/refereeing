@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+    <title>{{title}}</title>
+  </head>
+  <body>
+        {{> menu_signed}}
+        <div id="wrapper">            
+                {{#if admin}}
+                    {{> table_nav}}
+                {{/if}}
+                {{#if judge}}
+                    {{> table_nav}}
+                {{/if}}
+                <div id="page-content-wrapper">
+                    <div class="container-fluid">
+                        <h1>Программа для судейства</h1>
+                            <p>Тут какое то интересное описание</p>     
+                            {{#if admin}}
+                                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Список таблиц</a>
+                            {{/if}}
+                            {{#if judge}}
+                                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Список таблиц</a>
+                            {{/if}}            
+                            <div class = "div-table">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>№ п/п</th>
+                                            <th>Имя</th>
+                                            <th>Фамилия</th>
+                                            <th>E-mail</th>
+                                            <th>Действие</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Иван</td>
+                                            <td>Чмель</td>
+                                            <td>ivan@mail.ru</td>
+                                            <td><button class="btn btn-primary" type="submit">Изменить</button>
+                                            <button class="btn btn-danger" type="submit">Удалить</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Петр</td>
+                                            <td>Щербаков</td>
+                                            <td>petr@mail.ru</td>
+                                            <td><button class="btn btn-primary" type="submit">Изменить</button>
+                                                <button class="btn btn-danger" type="submit">Удалить</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="btn btn-primary" type="submit">Добавить</button></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>              
+        
+            </div>           
+            {{#if admin}}
+                {{> script}}
+            {{/if}}
+            {{#if judge}}
+                {{> script}}
+            {{/if}}
+    </body>
+</html>
