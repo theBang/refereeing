@@ -74,7 +74,7 @@ exports.getAthleteOptions = function(){
 
 exports.addAthlete = function (params, user_id) {
     return new Promise ((resolve, reject) => {
-        models.organization.findAll({
+        models.organization.findOne({
             where: {
                 user_id: user_id
             }
@@ -178,6 +178,27 @@ exports.deleteCompetition = function (delete_id) {
     });
 }
 
+exports.getAthletes = function(){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            models.athlete.findAll({
+                include: [
+                    { model: models.gender_type },
+                    { model: models.city },
+                    { model: models.organization }
+                ]
+            }).then(objects => {
+                if (objects) {
+                    resolve(objects);
+                }
+                reject([]);
+            })
+        })
+        .catch(()=> {
+            reject([]);
+        })
+    });
+};
 
 exports.getAgentAthletes = function(user_id){
     return new Promise ((resolve, reject) => {

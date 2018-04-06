@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     {{> head}}
-    <link href="css/simple-sidebar.css" rel="stylesheet">
     <title>{{title}}</title>
   </head>
   <body>
@@ -27,24 +26,11 @@
                                     <tbody>
                                         {{#each organizations}}
                                             <tr>
-                                                <td>{{this.code}}</td>
+                                                <td>{{this.id}}</td>
                                                 <td>{{this.name}}</td>
-                                                <td>{{this.team_fight}}</td>
-                                                <td>
-                                                    <button class="btn btn-primary" type="submit">Изменить</button>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger" type="submit">Удалить</button>
-                                                </td>
+                                                <td>{{this.team_fight}}</td>                                            
                                             </tr>
                                         {{/each}}
-                                        <tr>
-                                            <td><button class="btn btn-primary" type="submit">Добавить</button></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

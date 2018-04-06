@@ -143,7 +143,7 @@ function returnAthleteCard(athleteCardPromise, res) {
                                     id: athleteCard.id,
                                     row: [
                                         competition.name,
-                                        athlete.last_name + " " + athlete.middle_name.charAt(0) + "." + athlete.first_name.charAt(0) + ".",
+                                        athlete.last_name + " " + athlete.first_name.charAt(0) + "." + athlete.middle_name.charAt(0) + ".",
                                         athletic.name,
                                         athleteCard.current_result,
                                         rank.name

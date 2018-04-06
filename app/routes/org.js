@@ -1,7 +1,7 @@
 var orgController = require('../controllers/orgController');
  
 module.exports = function(app) {
-    app.get('/organizations', isLoggedIn, orgController.get);
+    app.get('/organization', isLoggedIn, orgController.get);
  
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated())

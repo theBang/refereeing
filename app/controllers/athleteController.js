@@ -11,9 +11,10 @@ exports.get = function(req, res) {
     if(role == 'agent') { agent = true; }
 
     console.log('Get athletes');
-    var tableHead = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер'];
+    var tableHead;
     console.log(user.id);
     if (agent) {
+        tableHead = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер']
         db.getAgentAthletes(user.id).then(athletes => {
             var outAthletes = [];
             athletes.forEach(function(athlete) {
@@ -43,9 +44,41 @@ exports.get = function(req, res) {
         .catch (() => {
             res.sendStatus(500);
         });
-    } else {
-        res.redirect('/');
-    }
+    } 
+    
+    if(judge) {
+        tableHead = ['Организация', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер']
+        db.getAthletes().then(athletes => {
+            var outAthletes = [];
+            athletes.forEach(function(athlete) {
+                outAthletes.push({
+                    id: athlete.id,
+                    organization: athlete.organization.name,
+                    number: athlete.number,
+                    firstname: athlete.first_name,
+                    middlename: athlete.middle_name,
+                    lastname: athlete.last_name,
+                    birthday: athlete.birthday,
+                    coach: athlete.coach,
+                    gender: athlete.gender_type.gender_type,
+                    city: athlete.city.name,
+                });
+            });
+
+            res.render('athletesJudge.hbs', {
+                title: 'Спортсмены',
+                tableHead: tableHead,
+                athletes: outAthletes,
+                username: user.email,
+                admin: admin,
+                judge: judge,
+                agent: agent
+            });
+        })
+        .catch (() => {
+            res.sendStatus(500);
+        });
+    } 
 }
 
 exports.getOptions = function(req, res) {
