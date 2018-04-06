@@ -6,7 +6,8 @@
 	var pageName = url[url.length-1];
 	console.log(pageName);
 	var tNum;
-	
+	var buttons = "<td>\n<button class = 'btn btn-primary changeRow'>Изменить</button>\n<button class = 'btn btn-danger deleteRow'>Удалить</button>\n</td>";
+
 	switch(pageName){
 		
 		case 'athlete':
@@ -44,7 +45,8 @@
 		}		
 	}	
 	
-	var $inputs = $('input[type=text], select, input[type=date]');
+	
+	var $inputs = $('input[type=text], select, input[type=date], input[type=time]');
 	//Скрипт для закрытия формы заполнения данных	
 	$('#cancelButton').click(function(){
 		closeFormFunction();
@@ -149,7 +151,7 @@
             for(i = 0; i < arrayOfData.length; i++) {
                 if(arrayOfData[i] == "") {
 						console.log(arrayOfData[i]);
-                   success = false;
+                   	success = false;
                     break;
 				}
 			}
@@ -158,7 +160,7 @@
 			object: arrayOfData			
 		}	
 
-		if(success == true)
+		if(success == true) {
 			$.ajax({		
 				url: "/" + pageName,			
 				type: "POST",	
@@ -166,26 +168,24 @@
 				contentType: "application/json",
 				data: JSON.stringify(inputData),				 
 				success: function(data, textStatus, xhr){
-					if(xhr.status == '200')  {				
-						$('#table tbody').append('<tr' + 'data-id="' + data.id + '"></tr>');			
-						var $addedRow = $('#table tbody tr').last().prev();	
+					if(xhr.status == '200')  {			
+						$(".showDataForm").before('<tr' + ' data-id="' + data.id + '"></tr>');
+						var $addedRow = $('#table tbody tr').eq(-3);	
 						data.row.forEach(function(item){				
 							$addedRow.append('<td>' + item + '</td>');							
 						});			
-						$addedRow.append("<td>" + "<button class = 'btn btn-primary changeRow'>Изменить</button>" + "</td>");
-						$addedRow.append("<td>" + "<button class = 'btn btn-danger deleteRow'>Удалить</button>" + "</td>");
-						
+						$addedRow.append(buttons);
 						closeFormFunction();					
 					}							
 				},
 				complete: function(xhr, textStatus) {
 					if (xhr.status == '500') {
-						alert("Не правильно введены данные!");
+						console.log('500')
+						alert("Неправильно введены данные!");
 					}
 				} 					
 			});	
-			else				
-				alert("Не правильно введены данные!");			
+		} else { alert("Неправильно введены данные!");	}
 	});
 
 	var $changedRow, $rowCells;	
@@ -230,6 +230,14 @@
 				i++;				
 			});	
 		}
+
+		if (tNum == 2) {		
+			var i = 0;
+			$inputs.each(function(){				
+				$(this).val($rowCells.eq(i).text());
+				i++;				
+			});	
+		}
 		getOptions();
 		showDataForm('change');
 
@@ -239,54 +247,52 @@
 		$rowCells = $changedRow.attr("data-id");;	
 			
 		$('#changeRow').bind('click', function(){
-		var arrayOfData = new Array();
-		
-		$inputs.each(function(){			
-			arrayOfData.push($(this).val());		
-		});		
-		var success = true;
-		
-            for(var i = 0; i < arrayOfData.length; i++) {
-                if(arrayOfData[i] == "") {
-					console.log(arrayOfData[i]);
-                   	success = false;
-                    break;
-				}
-            }					
+			var arrayOfData = new Array();
 			
+			$inputs.each(function(){			
+				arrayOfData.push($(this).val());		
+			});		
+			var success = true;
+			
+			for(var i = 0; i < arrayOfData.length; i++) {
+				if(arrayOfData[i] == "") {
+					console.log(arrayOfData[i]);
+					success = false;
+					break;
+				}
+			}					
+				
 			var inputData = {				
 				id: $rowCells,
 				object: arrayOfData			
 			}
 
-		if(success)
-			$.ajax({		
-				url: "/" + pageName,				
-				type: "PUT",				
-				dataType: 'json',	 
-				contentType: "application/json",
-				data: JSON.stringify(inputData),
-				success: function(data, textStatus, xhr){
-					if(xhr.status == '200')  { 
-						$changedRow.empty();	
-						$changedRow.attr('data-id', data.id);					
-						data.row.forEach(function(item){						
-							$changedRow.append('<td>' + item + '</td>');
-						});	
-						$changedRow.append("<td>" + "<button class = 'btn btn-primary changeRow'>Изменить</button>" + "</td>");
-						$changedRow.append("<td>" + "<button class = 'btn btn-danger deleteRow'>Удалить</button>" + "</td>");
-						closeFormFunction();	 
-					}								
-				},
-				complete: function(xhr, textStatus) {
-					if (xhr.status == '500') {
-						alert("Произошла ошибка при удалении!");
-					}
-				} 					
-			});
-			else{
-				alert("Произошла ошибка при изменении!");
-			}			
+			if(success) {
+				$.ajax({		
+					url: "/" + pageName,				
+					type: "PUT",				
+					dataType: 'json',	 
+					contentType: "application/json",
+					data: JSON.stringify(inputData),
+					success: function(data, textStatus, xhr){
+						if(xhr.status == '200')  { 
+							$changedRow.empty();	
+							$changedRow.attr('data-id', data.id);					
+							data.row.forEach(function(item){						
+								$changedRow.append('<td>' + item + '</td>');
+							});	
+							$changedRow.append(buttons);
+							closeFormFunction();	 
+						}								
+					},
+					complete: function(xhr, textStatus) {
+						if (xhr.status == '500') {
+							console.log(xhr);
+							alert("Произошла ошибка при изменении!");
+						}
+					} 					
+				});
+			} else { alert("Произошла ошибка при изменении!"); }			
 		})
 	});
 })

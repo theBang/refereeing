@@ -66,9 +66,9 @@
                                 <tbody>
                                     {{#each athletes}}
                                         <tr data-id="{{this.id}}">
-                                            <td>{{this.firstname}}</td>
-                                            <td>{{this.middlename}}</td>
                                             <td>{{this.lastname}}</td>
+                                            <td>{{this.firstname}}</td>
+                                            <td>{{this.middlename}}</td>                
                                             <td>{{this.birthday}}</td>
                                             <td>{{this.gender}}</td>
                                             <td>{{this.coach}}</td>
@@ -80,9 +80,8 @@
                                             </td>
                                         </tr>
                                     {{/each}}
-                                    <tr>
+                                    <tr class="showDataForm">
                                         <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

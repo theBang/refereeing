@@ -11,7 +11,7 @@ exports.get = function(req, res) {
     if(role == 'agent') { agent = true; }
 
     console.log('Get athletes');
-    var tableHead = ['Имя', 'Отчество', 'Фамилия', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер'];
+    var tableHead = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер'];
     console.log(user.id);
     if (agent) {
         db.getAgentAthletes(user.id).then(athletes => {

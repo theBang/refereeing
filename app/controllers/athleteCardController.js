@@ -9,28 +9,29 @@ exports.get = function(req, res) {
     if(role == 'admin') { admin = true; }
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
-
+    console.log('--------------------------------------------------------------------------------------');
     console.log('Get athleteCards');
     var tableHead = ['Соревнование', 'Спортсмен', 'Вид спорта', 'Лучший результат', 'Разряд'];
     
     if (agent) {
         db.getAgentAthleteCards(user.id).then(athleteCards => {
-            var outAthletes = [];
+            var outAthleteCards = [];
             athleteCards.forEach(function(athleteCard) {
-                outAthletes.push({
+                outAthleteCards.push({
                     id: athleteCard.id,
                     competition: athleteCard.competition.name,
-                    athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athlete.middle_name.charAt(0) + ".",
+                    athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athleteCard.athlete.middle_name.charAt(0) + ".",
                     athletics: athleteCard.athletics_type.name,
                     result: athleteCard.current_result,
                     rank: athleteCard.rank.name
                 });
+                
             });
 
             res.render('athlete_card.hbs', {
                 title: 'Карточки спортсменов',
                 tableHead: tableHead,
-                athletes: outAthletes,
+                athleteCards: outAthleteCards,
                 username: user.email,
                 admin: admin,
                 judge: judge,
@@ -92,7 +93,7 @@ exports.add = function(req, res) {
     if(role == 'admin') { admin = true; }
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
-    if (agent) { returnAthlete(db.addAthlete(req.body.object, user.id), res); }
+    if (agent) { returnAthleteCard(db.addAgentAthleteCard(req.body.object, user.id), res); }
 }
 
 exports.change = function(req, res) {
@@ -103,8 +104,7 @@ exports.change = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
     console.log('-------------------------           ' + req.body.id);
-    if (agent) { returnAthlete(db.changeAthlete(req.body.object, req.body.id, user.id), res); }
-    
+    if (agent) { returnAthleteCard(db.changeAgentAthleteCard(req.body.object, req.body.id, user.id), res); }
 }
 
 exports.delete = function(req, res) {
@@ -115,7 +115,7 @@ exports.delete = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
     if (agent) {
-        db.deleteAthlete(req.body.id, user.id)
+        db.deleteAgentAthleteCard(req.body.id, user.id)
             .then(deleted => {
                 if (deleted) {
                     res.status(200);
@@ -131,34 +131,46 @@ exports.delete = function(req, res) {
     }
 }
 
-function returnAthlete(athletePromise, res) {
-    athletePromise.then(athlete => {
-        db.getGenderById(athlete.gender_type_id).then(gender => {
-            db.getCityById(athlete.city_id).then(city => {
-                if (athlete) {
-                    var data = {
-                        id: athlete.id,
-                        row: [
-                            athlete.last_name,
-                            athlete.first_name,
-                            athlete.middle_name,
-                            athlete.birthday,
-                            gender.gender_type,
-                            athlete.coach,
-                            city.name,
-                            athlete.number
-                        ]
-                    };
-                    res.status(200);
-                    res.setHeader("Content-Type", "application/json");
-                    res.send(JSON.stringify(data));
-                } else {
-                    res.sendStatus(500);
-                }
-            })
-        })
-    })
-    .catch (() => {
-        res.sendStatus(500);
-    });    
+function returnAthleteCard(athleteCardPromise, res) {
+    athleteCardPromise.then(athleteCard => {
+        db.getCompetitionById(athleteCard.competition_id).then(competition => {
+           db.getAthleticsTypeById(athleteCard.athletics_type_id).then(athletic => {
+                db.getRankById(athleteCard.rank_id).then(rank => {
+                    db.getAppearenceById(athleteCard.appearence_id).then(appearence => {
+                        db.getAthleteById(athleteCard.athlete_id).then(athlete => {
+                            if (athleteCard) {
+                                var data = {
+                                    id: athleteCard.id,
+                                    row: [
+                                        competition.name,
+                                        athlete.last_name + " " + athlete.middle_name.charAt(0) + "." + athlete.first_name.charAt(0) + ".",
+                                        athletic.name,
+                                        athleteCard.current_result,
+                                        rank.name
+                                    ]
+                                };
+                                res.status(200);
+                                res.setHeader("Content-Type", "application/json");
+                                res.send(JSON.stringify(data));
+                            } else {
+                                res.sendStatus(500);
+                            }
+                        }).catch(() => {
+                            res.sendStatus(500)
+                        });
+                    }).catch(() => {
+                        res.sendStatus(500)
+                    });
+                }).catch(() => {
+                    res.sendStatus(500)
+                });
+            }).catch(() => {
+                res.sendStatus(500)
+            });
+        }).catch(() => {
+            res.sendStatus(500)
+        });
+    }).catch(() => {
+        res.sendStatus(500)
+    });
 }
