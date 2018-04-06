@@ -6,8 +6,8 @@ exports.renderMain = function(req, res) {
     var admin = false, judge = false;
     var page = 'index';
     if(role == 'admin') { admin = true; }
-    if(role == 'judge') { judge = true; }
-    if(role == 'agent') { res.redirect('/competition'); }
+    //if(role == 'judge') { judge = true; }
+    if(role == 'agent' || role == 'judge') { res.redirect('/competition'); }
     //if(role == 'athlete') {}
 
     res.render(page, {

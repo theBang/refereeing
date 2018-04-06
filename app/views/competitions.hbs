@@ -5,49 +5,45 @@
     <title>{{title}}</title>
     </head>
     <body>
-        {{> menu_signed}}
-        <div id="wrapper">            
-            {{> table_nav}}
-            <div id="page-content-wrapper">
-                <div class="container-fluid">
-                    <h1>{{title}}</h1>
-                    <p>Предстоящие соревнования</p>     
-                    {{#if admin}}
-                        <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
-                    {{/if}}
-                    {{#if judge}}
-                        <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
-                    {{/if}}                   
-                    <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
-                        <div class="div-table">
-                            <table class="table table-hover">
-                                <thead>
+    {{> menu_signed}}
+    <div id="wrapper">            
+        {{> table_nav}}
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <h1>{{title}}</h1>
+                <p>Предстоящие соревнования</p>     
+                {{#if admin}}
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                {{/if}}
+                {{#if judge}}
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                {{/if}}                   
+                <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                    <div class="div-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                {{#each tableHead}}
+                                    <th>{{this}}</th>
+                                {{/each}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each competitions}}
                                     <tr>
-                                    {{#each tableHead}}
-                                        <th>{{this}}</th>
-                                    {{/each}}
+                                        <td>{{this.name}}</td>
+                                        <td>{{this.competition_date_start}}</td>
+                                        <td>{{this.place}}</td>
+                                        <td>{{this.main_referee}}</td>
+                                        <td>{{this.main_secretary}}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each competitions}}
-                                        <tr>
-                                            <td>{{this.name}}</td>
-                                            <td>{{this.is_summer}}</td>
-                                            <td>{{this.main_referee}}</td>
-                                            <td>{{this.referee_category}}</td>
-                                            <td>{{this.main_secretary}}</td>
-                                            <td>{{this.secretary_category}}</td>
-                                            {{> change_del_button}}
-                                        </tr>
-                                    {{/each}}
-                                    {{> add_button}}
-                                </tbody>
-                            </table>
-                        </div>
+                                {{/each}}                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>              
-        </div>                       
+            </div>
+        </div>                                    
         {{> script}}
     </body>
 </html>

@@ -106,6 +106,79 @@ exports.addAthlete = function (params, user_id) {
     })
 };
 
+exports.addCompetition = function (params) {
+    return new Promise ((resolve, reject) => {
+        console.log('\n-------------------------------------');
+        console.log(params);
+        console.log('\n-------------------------------------');
+        models.competition.create({
+            name: params[0], 
+            competition_date_start: params[1],
+            place: params[2],
+            main_referee: params[3],
+            main_secretary: params[4]
+        })
+        .then(competition => {
+            console.log('\nHERE');
+            console.log(competition);
+            console.log('\n-------------------------------------');
+            if (competition) {               
+                resolve(competition);
+            }
+            reject({});
+        })
+        .catch(()=> {
+            reject({});
+        });
+    })
+};
+
+exports.changeCompetition = function (params, change_id) {
+    return new Promise ((resolve, reject) => {
+        models.competition.update({
+                name: params[0], 
+                competition_date_start: params[1],
+                place: params[2],
+                main_referee: params[3],
+                main_secretary: params[4]
+            }, {
+                where: {
+                    id: change_id
+                }
+        })
+        .then(() => models.competition.findById(change_id))
+        .then(competition => {
+            if (competition) {
+                resolve(competition);
+            }
+            reject({});
+        })
+        .catch(()=> {
+            reject({});
+        });
+    });
+};
+
+exports.deleteCompetition = function (delete_id) {
+    return new Promise ((resolve, reject) => {
+        models.competition.destroy({
+            where: {
+                id: delete_id
+            }
+        })
+        .then(competition => {
+            if (competition) {
+                resolve(true);
+            }
+            reject(false);
+        })
+        .catch(()=> {
+            reject(false);
+        });
+    });
+}
+
+
 exports.getAgentAthletes = function(user_id){
     return new Promise ((resolve, reject) => {
         models.sequelize.sync().then(() => {

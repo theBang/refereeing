@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    {{> head}}
+    <title>{{title}}</title>
+    </head>
+    <body>
+    {{> menu_signed}}
+    <div id="wrapper">            
+        {{> table_nav}}
+        <div id="dataform-wrapper">
+        <div id="dataForm">               
+                <form id="my_form">
+                <div class="form-group">
+                <legend class="m-b-1">Добавить соревнование</legend>
+                  
+                  <div class="form-group ">
+                        <label for="title">Название</label>
+                            <input class="form-control" id="title" type="text" placeholder="Название соревнований"/>   
+
+                        <label for="date">Дата проведения</label>
+                            <input type="date" class="form-control">
+                        
+                        <label for="place">Место проведения</label>
+                            <input class="form-control" id="place" type="text" placeholder="Место проведения"
+                            />
+                        <label for="main_referee">Главный судья</label>
+                            <input class="form-control" id="main_referee" type="text" placeholder="Главный судья"/>     
+
+                        <label for="main_secretary">Главный секретарь</label>
+                            <input class="form-control" id="main_secretary" type="text" placeholder="Главный секретарь"/> 
+                    </div>                             
+                    </div>
+                            <input class = "btn btn-primary" id="addRow" type="button" value="Добавить"/>
+                            <input class = "btn btn-primary" id="changeRow" type="button" value="Изменить" />
+                            <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена" />
+                </form>
+            </div> 
+        </div>
+        <div id="overlay"></div>  
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <h1>{{title}}</h1>
+                <p>Предстоящие соревнования</p>     
+                {{#if admin}}
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                {{/if}}
+                {{#if judge}}
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                {{/if}}                   
+                <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                    <div class="div-table">
+                        <table class="table table-hover" id = "table">
+                            <thead>
+                                <tr>
+                                {{#each tableHead}}
+                                    <th>{{this}}</th>
+                                {{/each}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each competitions}}
+                                    <tr data-id="{{this.id}}">
+                                        <td>{{this.name}}</td>
+                                        <td>{{this.competition_date_start}}</td>
+                                        <td>{{this.place}}</td>
+                                        <td>{{this.main_referee}}</td>
+                                        <td>{{this.main_secretary}}</td>
+                                        <td>
+                                            <button class="btn btn-primary changeRow">Изменить</button>
+                                            <button class="btn btn-danger deleteRow">Удалить</button>
+                                        </td>
+                                    </tr>
+                                {{/each}}  
+                                 <tr class="showDataForm">
+                                    <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>              
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>                                    
+        {{> script}}
+    </body>
+</html>
