@@ -53,6 +53,13 @@
 	});
 
 	function getOptions() {
+		var setValue = arguments[0];
+		var selected;
+		/*if (arguments[0]) {
+			console.log(arguments[0]);
+		} else {
+			console.log('nothingHere');
+		}*/
 		if (tNum != 3) {
 			$.ajax({		
 				url: "/" + pageName + "s",			
@@ -70,11 +77,21 @@
 							//селект города
 							var cities =  data.cities;
 							var i, j;
-							for(i = 0; i < genders.length; i++) {				
-								$(".sex").append( $("<option value= '" + genders[i].id + "'>" + genders[i].gender_type + "</option>'"));
+							for(i = 0; i < genders.length; i++) {	
+								if (setValue && setValue[4] == genders[i].gender_type) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}			
+								$(".sex").append( $("<option value= '" + genders[i].id + "'" + selected + ">" + genders[i].gender_type + "</option>'"));
 							}
-							for(i = 0; i < cities.length; i++) {				
-								$(".city").append( $("<option value= '" + cities[i].id + "'>" + cities[i].name + "</option>'"));
+							for(i = 0; i < cities.length; i++) {		
+								if (setValue && setValue[6] == cities[i].name) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}			
+								$(".city").append( $("<option value= '" + cities[i].id + "'" + selected + ">" + cities[i].name + "</option>'"));
 							}
 						}
 						if ( tNum == 2) {
@@ -97,20 +114,45 @@
 							var appearences = data.appearences;
 							console.log(athletes[0].first_name);
 							var i;
-							for(i = 0; i < competitions.length; i++) {				
-								$(".competition").append( $("<option value= '" + competitions[i].id + "'>" + competitions[i].name + "</option>'"));
+							for(i = 0; i < competitions.length; i++) {		
+								if (setValue && setValue[0] == competitions[i].name) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}		
+								$(".competition").append( $("<option value= '" + competitions[i].id + "'" + selected + ">" + competitions[i].name + "</option>'"));
 							}
-							for(i = 0; i < athletes.length; i++) {				
-								$(".athlete").append( $("<option value= '" + athletes[i].id + "'>" + athletes[i].last_name + " " + athletes[i].first_name.charAt(0) + "." + athletes[i].middle_name.charAt(0) +  ".</option>'"));
+							for(i = 0; i < athletes.length; i++) {		
+								if (setValue && setValue[1] == athletes[i].last_name) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}		
+								$(".athlete").append( $("<option value= '" + athletes[i].id + "'" + selected + ">" + athletes[i].last_name + " " + athletes[i].first_name.charAt(0) + "." + athletes[i].middle_name.charAt(0) +  ".</option>'"));
 							}
-							for(i = 0; i < athletics.length; i++) {				
-								$(".athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].name + "</option>'"));
+							for(i = 0; i < athletics.length; i++) {		
+								if (setValue && setValue[2] == athletics[i].name) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}		
+								$(".athleticsType").append( $("<option value= '" + athletics[i].id + "'" + selected + ">" + athletics[i].name + "</option>'"));
 							}
-							for(i = 0; i < ranks.length; i++) {				
-								$(".rank").append( $("<option value= '" + ranks[i].id + "'>" + ranks[i].name + "</option>'"));
+							for(i = 0; i < ranks.length; i++) {		
+								if (setValue && setValue[4] == ranks[i].name) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}		
+								$(".rank").append( $("<option value= '" + ranks[i].id + "'" + selected + ">" + ranks[i].name + "</option>'"));
 							}
-							for(i = 0; i < appearences.length; i++) {				
-								$(".appearences").append( $("<option value= '" + appearences[i].id + "'>" + appearences[i].name + "</option>'"));
+							for(i = 0; i < appearences.length; i++) {		
+								if (setValue && setValue[5] == appearences[i].name) {
+									selected = ' selected ';
+								} else {
+									selected = '';
+								}		
+								$(".appearences").append( $("<option value= '" + appearences[i].id + "'" + selected + ">" + appearences[i].name + "</option>'"));
 							}
 						}
 					}
@@ -212,7 +254,11 @@
 			},
 			complete: function(xhr, textStatus) {
 				if (xhr.status == '500') {
-					alert("Произошла ошибка при удалении!");
+					if (pageName == 'athlete') {
+						alert("Сначала удалите карточки этого спортсмена");
+					} else {
+						alert("Произошла ошибка при удалении!");
+					}					
 				}
 			} 				
 		});
@@ -227,12 +273,15 @@
 		$rowCells = $changedRow.children("td");
 		
 		var i = 0;
+		var setValue = [];
+
 		$inputs.each(function(){				
 			$(this).val($rowCells.eq(i).text());
+			setValue.push($rowCells.eq(i).text());
 			i++;				
 		});		
 			
-		getOptions();
+		getOptions(setValue);
 		showDataForm('change');
 
 		$('#changeRow, #deleteRow').unbind();

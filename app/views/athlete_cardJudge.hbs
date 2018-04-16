@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+
+    <title>{{title}}</title>
+    </head>
+    <body>
+        {{> menu_signed}}
+        <div id="wrapper">            
+            {{> table_nav}}
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <h1>{{title}}</h1>
+                    <p>Спортсмены</p>     
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Справочная информация</a>
+                    <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                        <div class="div-table">
+                            <table class="table table-hover"  id = "table">
+                                <thead>
+                                    <tr>
+                                    {{#each tableHead}}
+                                        <th>{{this}}</th>
+                                    {{/each}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each athleteCards}}
+                                        <tr data-id="{{this.id}}">
+                                            <td>{{this.competition}}</td>
+                                            <td>{{this.athlete}}</td>
+                                            <td>{{this.athletics}}</td>
+                                            <td>{{this.result}}</td>
+                                            <td>{{this.rank}}</td>
+                                            <td>{{this.appearence}}</td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>                            
+        {{> script}}
+    </body>
+</html>

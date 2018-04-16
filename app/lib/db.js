@@ -297,7 +297,8 @@ exports.getAgentAthleteCards = function(user_id){
                     { model: models.athlete, where: { user_id: user_id }},
                     { model: models.competition },
                     { model: models.athletics_type },
-                    { model: models.rank }
+                    { model: models.rank },
+                    { model: models.appearence }
                 ]
             }).then(objects => {
                 if (objects) {
@@ -305,8 +306,30 @@ exports.getAgentAthleteCards = function(user_id){
                 }
                 reject([]);
             })
+        }).catch(()=> {
+            reject([]);
         })
-        .catch(()=> {
+    });
+};
+
+exports.getAthleteCards = function(){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            models.athlete_card.findAll({
+                include: [
+                    { model: models.athlete},
+                    { model: models.competition },
+                    { model: models.athletics_type },
+                    { model: models.rank },
+                    { model: models.appearence }
+                ]
+            }).then(objects => {
+                if (objects) {
+                    resolve(objects);
+                }
+                reject([]);
+            })
+        }).catch(()=> {
             reject([]);
         })
     });

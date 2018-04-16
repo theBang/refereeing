@@ -11,24 +11,66 @@ exports.get = function(req, res) {
     if(role == 'agent') { agent = true; }
     console.log('--------------------------------------------------------------------------------------');
     console.log('Get athleteCards');
-    var tableHead = ['Соревнование', 'Спортсмен', 'Вид спорта', 'Лучший результат', 'Разряд'];
+    var tableHead = ['Соревнование', 'Спортсмен', 'Вид спорта', 'Лучший результат', 'Разряд', 'Выступление', 'Действие'];
     
     if (agent) {
         db.getAgentAthleteCards(user.id).then(athleteCards => {
             var outAthleteCards = [];
             athleteCards.forEach(function(athleteCard) {
+                var competitionName;
+                if(athleteCard.competition) {
+                    competitionName = athleteCard.competition.name;
+                } else {
+                    competitionName = 'Соревнования были удалены';
+                }
                 outAthleteCards.push({
                     id: athleteCard.id,
-                    competition: athleteCard.competition.name,
+                    competition: competitionName,
                     athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athleteCard.athlete.middle_name.charAt(0) + ".",
                     athletics: athleteCard.athletics_type.name,
                     result: athleteCard.current_result,
-                    rank: athleteCard.rank.name
+                    rank: athleteCard.rank.name,
+                    appearence: athleteCard.appearence.name
                 });
-                
             });
 
             res.render('athlete_card.hbs', {
+                title: 'Карточки спортсменов',
+                tableHead: tableHead,
+                athleteCards: outAthleteCards,
+                username: user.email,
+                admin: admin,
+                judge: judge,
+                agent: agent
+            });
+        }).catch (() => {
+            res.status(500);
+        });
+    } 
+
+    if(judge) {
+        tableHead = ['Соревнование', 'Спортсмен', 'Вид спорта', 'Лучший результат', 'Разряд', 'Выступление']
+        db.getAthleteCards().then(athleteCards => {
+            var outAthleteCards = [];
+            athleteCards.forEach(function(athleteCard) {
+                var competitionName;
+                if(athleteCard.competition) {
+                    competitionName = athleteCard.competition.name;
+                } else {
+                    competitionName = 'Соревнования были удалены';
+                }
+                outAthleteCards.push({
+                    id: athleteCard.id,
+                    competition: competitionName,
+                    athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athleteCard.athlete.middle_name.charAt(0) + ".",
+                    athletics: athleteCard.athletics_type.name,
+                    result: athleteCard.current_result,
+                    rank: athleteCard.rank.name,
+                    appearence: athleteCard.appearence.name
+                });
+            });
+
+            res.render('athlete_cardJudge.hbs', {
                 title: 'Карточки спортсменов',
                 tableHead: tableHead,
                 athleteCards: outAthleteCards,
@@ -41,9 +83,7 @@ exports.get = function(req, res) {
         .catch (() => {
             res.sendStatus(500);
         });
-    } else {
-        res.redirect('/');
-    }
+    } 
 }
 
 exports.getOptions = function(req, res) {
@@ -146,7 +186,8 @@ function returnAthleteCard(athleteCardPromise, res) {
                                         athlete.last_name + " " + athlete.first_name.charAt(0) + "." + athlete.middle_name.charAt(0) + ".",
                                         athletic.name,
                                         athleteCard.current_result,
-                                        rank.name
+                                        rank.name,
+                                        appearence.name
                                     ]
                                 };
                                 res.status(200);

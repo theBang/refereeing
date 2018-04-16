@@ -24,7 +24,9 @@ db.record = require('./record')(sequelize, Sequelize);
 db.athletics_type = require('./athletics_type')(sequelize, Sequelize, db.record);
 db.competition = require('./competition')(sequelize, Sequelize);
 db.appearence = require('./appearence')(sequelize, Sequelize);
-db.athlete_card = require('./athlete_card')(sequelize, Sequelize, db.athlete, db.athletics_type, db.rank, db.competition, db.appearence);
+db.athlete_card = require('./athlete_card')(sequelize, Sequelize, db.athletics_type, db.rank, db.competition, db.appearence);
+db.athlete.hasMany(db.athlete_card, { onDelete: 'cascade' });
+db.athlete_card.belongsTo(db.athlete, { foreignKey: 'athlete_id' });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

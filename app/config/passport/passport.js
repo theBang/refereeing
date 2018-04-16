@@ -47,12 +47,12 @@ module.exports = function(passport, user, organization) {
                     User.create(data).then(function(newUser, created) {
                         if (!newUser) return done(null, false); 
                         if (newUser) {
-                            Organization.create({
+                           Organization.create({
                                 name: req.body.organization,
                                 user_id: newUser.id
                             }).then(org => {
                                 return done(null, newUser);
-                            });
+                           });
                         }
                     });
                 }

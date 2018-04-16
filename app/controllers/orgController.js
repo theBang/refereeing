@@ -27,12 +27,13 @@ exports.get = function(req, res) {
                     tableHead: tableHead,
                     organizations: organizations,
                     admin: admin,
-                    judge: judge
+                    judge: judge,
+                    username: user.email
                 });
             })
             .catch (() => {
                 res.sendStatus(500);
             });
-    }
+    } 
 }
 

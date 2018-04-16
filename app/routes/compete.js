@@ -9,6 +9,6 @@ module.exports = function(app) {
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated())
             return next();
-        res.redirect('/');
+        competeController.getUnsigned(req, res);
     }
 }

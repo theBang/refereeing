@@ -5,7 +5,7 @@ var exports = module.exports = {}
 exports.get = function(req, res) {
     var user = req.user;
     var role = user.role;
-    var admin = false, judge = false;
+    var admin = false, judge = false, agent = false;
     var tableHead = [
         'Название', 
         'Дата проведения', 
@@ -14,6 +14,7 @@ exports.get = function(req, res) {
         'Главный секретарь'
     ];
     if(role == 'admin') { admin = true; }
+    if(role == 'agent') { agent = true; }
     if(role == 'judge') { 
         judge = true; 
         tableHead.push('Действие');
@@ -36,7 +37,35 @@ exports.get = function(req, res) {
                 competitions: competitions,
                 username: user.email,
                 admin: admin,
-                judge: judge 
+                judge: judge,
+                agent: agent
+            });
+        })
+        .catch (() => {
+            res.sendStatus(500);
+        });
+}
+
+exports.getUnsigned = function(req, res) {
+    var admin = false, judge = false, agent = false;
+    var tableHead = [
+        'Название', 
+        'Дата проведения', 
+        'Место проведения', 
+        'Главный судья', 
+        'Главный секретарь'
+    ];
+    
+    db.getCompetitions()
+        .then(competitions => {
+            res.render('competitions.hbs', {
+                title: 'Соревнования',
+                tableHead: tableHead,
+                competitions: competitions,
+                admin: admin,
+                judge: judge,
+                agent: agent,
+                unsigned: true
             });
         })
         .catch (() => {

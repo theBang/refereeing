@@ -13,7 +13,9 @@
 
 
         <div class="collapse navbar-collapse" id="navbar-collapse-4">
+
         <ul class="nav navbar-nav navbar-right">
+            <!--
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Главная<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -24,6 +26,7 @@
             </li>
 
             <li><a href="#">Контакты</a></li>
+            -->
             <li>
             <a class="btn btn-default btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse4" aria-expanded="false" aria-controls="nav-collapse4">Профиль<i class=""></i> </a>
             </li>
@@ -32,8 +35,12 @@
             <li class="dropdown" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img class="img-circle" src="http://bootstraptema.ru/snippets/icons/2016/mia/1.png" alt="USER" width="20" />{{username}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/profile">Мой профиль</a></li>
+                    {{#if agent}}
+                        <li><a href="/profile">Мой профиль</a></li>
+                    {{/if}}
+                    <!--
                     <li><a href="#">Настройки</a></li>
+                    -->
                     <li class="divider"></li>
                     <li><a href="/logout">Выйти</a></li>
                 </ul>
