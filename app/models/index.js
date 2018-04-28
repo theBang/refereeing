@@ -11,22 +11,69 @@ var db = {};
 //User
 db.user = require('./user')(sequelize, Sequelize);
 
-//Athlete
+// ---------- Athlete --------------
+//Gender
 db.gender = require('./gender')(sequelize, Sequelize);
 db.gender_type = require('./gender_type')(sequelize, Sequelize, db.gender);
-db.rank = require('./rank')(sequelize, Sequelize);
-db.organization = require('./organization')(sequelize, Sequelize, db.user);
-db.city = require('./city')(sequelize, Sequelize);
-db.athlete = require('./athlete')(sequelize, Sequelize, db.gender_type, db.organization, db.city, db.user);
+db.gender_type.belongsTo(db.gender, {foreignKey: 'gender_id'});
 
-//AthleteCard
+db.rank = require('./rank')(sequelize, Sequelize);
+
+//Organization
+db.organization = require('./organization')(sequelize, Sequelize, db.user);  
+db.organization.belongsTo(db.user, {foreignKey: 'user_id'});
+
+//Athlete
+db.city = require('./city')(sequelize, Sequelize);
+db.athlete = require('./athlete')(sequelize, Sequelize);
+db.athlete.belongsTo( db.gender_type, {foreignKey: 'gender_type_id'});
+db.athlete.belongsTo(db.organization, {foreignKey: 'organization_id'});
+db.athlete.belongsTo(db.city, {foreignKey: 'city_id'});
+
+// ---------- Competition --------------
+//Record
 db.record = require('./record')(sequelize, Sequelize);
 db.athletics_type = require('./athletics_type')(sequelize, Sequelize, db.record);
+db.athletics_type.belongsTo(db.record, {foreignKey: 'record_id'});
+
+//Competition
 db.competition = require('./competition')(sequelize, Sequelize);
+db.competition_type = require('./competition_type')(sequelize, Sequelize);
+db.competition_type.belongsTo(db.competition, {foreignKey: 'competition_id'});
+db.competition_type.belongsTo(db.athletics_type, {foreignKey: 'athletics_type_id'});
+db.final = require('./final')(sequelize, Sequelize);
+db.competition_type_final = require('./competition_type_final')(sequelize, Sequelize);
+db.competition_type_final.belongsTo(db.final, {foreignKey: 'final_id'});
+db.competition_type_final.belongsTo(db.competition_type, {foreignKey: 'competition_type_id'});
+
+// ---------- AthleteCard --------------
 db.appearence = require('./appearence')(sequelize, Sequelize);
-db.athlete_card = require('./athlete_card')(sequelize, Sequelize, db.athletics_type, db.rank, db.competition, db.appearence);
+db.athlete_card = require('./athlete_card')(sequelize, Sequelize);
+db.athlete_card.belongsTo(db.competition_type, {foreignKey: 'competition_type_id'});
+db.athlete_card.belongsTo(db.rank, {foreignKey: 'rank_id'});
+db.athlete_card.belongsTo(db.appearence, {foreignKey: 'appearence_id'});
 db.athlete.hasMany(db.athlete_card, { onDelete: 'cascade' });
 db.athlete_card.belongsTo(db.athlete, { foreignKey: 'athlete_id' });
+
+// ---------- Results --------------
+// ---------- Run --------------
+db.run = require('./run')(sequelize, Sequelize);
+db.run.belongsTo(db.competition_type_final, {foreignKey: 'competition_type_final_id'});
+
+//RunResults
+db.run_result = require('./run_result')(sequelize, Sequelize);
+db.run_result.belongsTo(db.athlete_card, {foreignKey: 'athlete_card_id'});
+db.run_result.belongsTo(db.run, {foreignKey: 'run_id'});
+
+// ---------- Try --------------
+db.try = require('./run')(sequelize, Sequelize);
+db.try.belongsTo(db.competition_type_final, {foreignKey: 'competition_type_final_id'});
+
+//RunResults
+db.try_result = require('./try_result')(sequelize, Sequelize);
+db.try_result.belongsTo(db.athlete_card, {foreignKey: 'athlete_card_id'});
+db.try_result.belongsTo(db.try, {foreignKey: 'try_id'});
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
