@@ -1,4 +1,4 @@
-var db = require('../lib/db');
+var db = require('../db');
 
 var exports = module.exports = {}
  
@@ -12,9 +12,9 @@ exports.get = function(req, res) {
 
     console.log('Get athletes');
     var tableHead;
-    console.log(user.id);
+
     if (agent) {
-        tableHead = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер']
+        tableHead = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город']
         db.getAgentAthletes(user.id).then(athletes => {
             var outAthletes = [];
             athletes.forEach(function(athlete) {
@@ -47,7 +47,7 @@ exports.get = function(req, res) {
     } 
     
     if(judge) {
-        tableHead = ['Организация', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город', 'Номер']
+        tableHead = ['Организация', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол', 'Тренер', 'Город']
         db.getAthletes().then(athletes => {
             var outAthletes = [];
             athletes.forEach(function(athlete) {
@@ -191,8 +191,7 @@ function returnAthlete(athletePromise, res) {
                             athlete.birthday,
                             gender.gender_type,
                             athlete.coach,
-                            city.name,
-                            athlete.number
+                            city.name
                         ]
                     };
                     res.status(200);

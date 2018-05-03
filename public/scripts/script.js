@@ -22,7 +22,7 @@
 			tNum = 3; 
 			break;
 			
-		case '.html':
+		case 'competitiontype':
 			tNum = 4; 
 			break;
 			
@@ -46,7 +46,7 @@
 	}	
 	
 	
-	var $inputs = $('input[type=text], select, input[type=date], input[type=time]');
+	var $inputs = $('input[type=text], select, input[type=date], input[type=time], input[type=number], input[type=checkbox]');
 	//Скрипт для закрытия формы заполнения данных	
 	$('#cancelButton').click(function(){
 		closeFormFunction();
@@ -61,6 +61,7 @@
 			console.log('nothingHere');
 		}*/
 		if (tNum != 3) {
+			console.log(tNum);
 			$.ajax({		
 				url: "/" + pageName + "s",			
 				type: "GET",					
@@ -68,7 +69,6 @@
 				success: function(data, textStatus, xhr) {
 					if (xhr.status == '200'){
 						if ( tNum == 1) {
-							console.log(data);
 							$('.sex').empty();
 							$('.org').empty();
 							$('.city').empty();
@@ -153,6 +153,22 @@
 									selected = '';
 								}		
 								$(".appearences").append( $("<option value= '" + appearences[i].id + "'" + selected + ">" + appearences[i].name + "</option>'"));
+							}
+						}
+
+						if (tNum == 4) {
+							$('.competition').empty();
+							//селект соревнований
+							var competitions = data.competitions;
+							var i;
+							for(i = 0; i < competitions.length; i++) {		
+								if (setValue && setValue[0] == competitions[i].name) { 
+									selected = ' selected '; 
+								} else { 
+									selected = ''; 
+								}	
+
+								$(".competition").append( $("<option value= '" + competitions[i].id + "'" + selected + ">" + competitions[i].name + "</option>'"));
 							}
 						}
 					}
@@ -277,6 +293,7 @@
 
 		$inputs.each(function(){				
 			$(this).val($rowCells.eq(i).text());
+			console.log($(this));
 			setValue.push($rowCells.eq(i).text());
 			i++;				
 		});		

@@ -35,8 +35,6 @@
                             <select class="form-control city">
                                                                  
                             </select>
-                            <label for="number">Номер участника</label>
-                            <input class="form-control" id="number" type="text" placeholder="Номер участника"/>
                         </div>                             
                     </div>
                     <input class = "btn btn-primary" id="addRow" type="button" value="Добавить"/>
@@ -73,7 +71,6 @@
                                             <td>{{this.gender}}</td>
                                             <td>{{this.coach}}</td>
                                             <td>{{this.city}}</td>
-                                            <td>{{this.number}}</td>
                                             <td>
                                                 <button class="btn btn-primary changeRow">Изменить</button>
                                                 <button class="btn btn-danger deleteRow">Удалить</button>
@@ -82,7 +79,6 @@
                                     {{/each}}
                                     <tr class="showDataForm">
                                         <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

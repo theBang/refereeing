@@ -39,24 +39,13 @@ var usersRoute = require('./app/routes/users')(app);
 var mainRoute = require('./app/routes/main')(app);
 var athleteRoute = require('./app/routes/athlete')(app);
 var athleteCardRoute = require('./app/routes/athleteCard')(app);
+var competeTypeRoute = require('./app/routes/competeType')(app);
 //Load passport strategies
 require('./app/config/passport/passport')(passport, models.user, models.organization);
 
 //Sync Database
 models.sequelize.sync().then(function() {
-    /*models.city.create({
-        name: 'Пермь'
-    });*/
-    /*models.appearence.create({
-        name: 'В команде'
-    }).then(() => {
-        models.appearence.create({
-            name: 'Лично'
-        });
-    });*/
-    console.log(' ');
     console.log('Nice! Database looks fine');
-    console.log(' ');
 }).catch(function(err) {
     console.log(err, "Something went wrong with the Database Update!")
 });

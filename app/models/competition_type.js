@@ -1,7 +1,7 @@
 module.exports = function(sequelize, Sequelize) {
     var CompetitionType = sequelize.define('competition_type', {
-        tracks_count: { type: Sequelize.INTEGER },
-        qualification: { type: Sequelize.BOOLEAN }
+        qualification: { type: Sequelize.BOOLEAN },        
+        status: { type: Sequelize.ENUM('Не начат', 'Жеребьевка', 'Идёт', 'Завершён'), defaultValue: 'Не начат' }
     });
 
     return CompetitionType;

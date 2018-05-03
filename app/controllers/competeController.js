@@ -1,4 +1,4 @@
-var db = require('../lib/db');
+var db = require('../db');
 
 var exports = module.exports = {}
  
@@ -17,6 +17,7 @@ exports.get = function(req, res) {
     if(role == 'agent') { agent = true; }
     if(role == 'judge') { 
         judge = true; 
+        tableHead.push('Количество дорожек');
         tableHead.push('Действие');
     }
 
@@ -26,11 +27,11 @@ exports.get = function(req, res) {
     db.getCompetitions()
         .then(competitions => {
             var competitionHbs;
-            if (judge || admin) {
-                competitionHbs = 'competitionsEdit.hbs'
-            } else {
-                competitionHbs = 'competitions.hbs'
-            }
+            if (judge || admin) { competitionHbs = 'competitionsEdit.hbs' } 
+            else { competitionHbs = 'competitions.hbs' }
+            competitions.forEach(competition => {
+                competition.competition_date_start = competition.competition_date_start.toDateString();
+            });
             res.render(competitionHbs, {
                 title: 'Соревнования',
                 tableHead: tableHead,
@@ -58,6 +59,9 @@ exports.getUnsigned = function(req, res) {
     
     db.getCompetitions()
         .then(competitions => {
+            competitions.forEach(competition => {
+                competition.competition_date_start = competition.competition_date_start.toDateString();
+            });
             res.render('competitions.hbs', {
                 title: 'Соревнования',
                 tableHead: tableHead,
@@ -81,9 +85,6 @@ exports.add = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
     if (admin || judge) { 
-        console.log('\n-------------------------------------');
-        console.log(req.body.object);
-        console.log('\n-------------------------------------');
         returnCompetition(db.addCompetition(req.body.object), res); 
     }
 }
@@ -125,6 +126,7 @@ exports.delete = function(req, res) {
 function returnCompetition(competitionPromise, res) {
     competitionPromise.then(competition => {
         if (competition) {
+            console.log(competition.competition_date_start)
             var data = {
                 id: competition.id,
                 row: [
@@ -132,7 +134,8 @@ function returnCompetition(competitionPromise, res) {
                     competition.competition_date_start,
                     competition.place,
                     competition.main_referee,
-                    competition.main_secretary
+                    competition.main_secretary,
+                    competition.track_count
                 ]
             };
             res.status(200);

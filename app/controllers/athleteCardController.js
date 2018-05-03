@@ -1,4 +1,4 @@
-var db = require('../lib/db');
+var db = require('../db');
 
 var exports = module.exports = {}
  
@@ -9,8 +9,7 @@ exports.get = function(req, res) {
     if(role == 'admin') { admin = true; }
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
-    console.log('--------------------------------------------------------------------------------------');
-    console.log('Get athleteCards');
+
     var tableHead = ['Соревнование', 'Спортсмен', 'Вид спорта', 'Лучший результат', 'Разряд', 'Выступление', 'Действие'];
     
     if (agent) {

@@ -1,4 +1,4 @@
-var db = require('../lib/db');
+var db = require('../db');
 
 var exports = module.exports = {}
  
