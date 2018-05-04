@@ -39,7 +39,7 @@ db.athletics_type.belongsTo(db.record, {foreignKey: 'record_id'});
 //Competition
 db.competition = require('./competition')(sequelize, Sequelize);
 db.competition_type = require('./competition_type')(sequelize, Sequelize);
-db.competition.hasMany(db.competition_type, { onDelete: 'cascade' });
+db.competition_type.belongsTo(db.competition, { foreignKey: 'competition_id'});
 db.competition_type.belongsTo(db.athletics_type, {foreignKey: 'athletics_type_id'});
 db.competition_type.belongsTo(db.gender_type, {foreignKey: 'gender_type_id'});
 
@@ -49,8 +49,8 @@ db.athlete_card = require('./athlete_card')(sequelize, Sequelize);
 db.athlete_card.belongsTo(db.competition_type, {foreignKey: 'competition_type_id'});
 db.athlete_card.belongsTo(db.rank, {foreignKey: 'rank_id'});
 db.athlete_card.belongsTo(db.appearence, {foreignKey: 'appearence_id'});
-db.athlete.hasMany(db.athlete_card, { onDelete: 'cascade' });
-//db.athlete_card.belongsTo(db.athlete, { foreignKey: 'athlete_id' });
+db.athlete.hasMany(db.athlete_card, { onDelete: 'cascade', foreignKey: 'athlete_id' });
+db.athlete_card.belongsTo(db.athlete, { foreignKey: 'athlete_id' });
 
 // ---------- Results --------------
 // ---------- Run --------------

@@ -126,7 +126,9 @@ exports.delete = function(req, res) {
 function returnCompetition(competitionPromise, res) {
     competitionPromise.then(competition => {
         if (competition) {
-            console.log(competition.competition_date_start)
+            //Problem when change. Inapproriate date (datetime instead if dateonly)
+            //competition.competition_date_start = competition.competition_date_start.toDateString();
+            console.log(competition.competition_date_start);
             var data = {
                 id: competition.id,
                 row: [
