@@ -98,7 +98,7 @@
 							console.log(data);
 							$('.competition').empty();
 							$('.athlete').empty();
-							$('.athleticsType').empty();
+							//$('.athleticsType').empty();
 							$('.rank').empty();
 							$('.appearences').empty();
 							
@@ -107,7 +107,7 @@
 							//селект спортсменов
 							var athletes = data.athletes;
 							//селект вида
-							var athletics = data.athletics;
+							//var athletics = data.athletics;
 							//селект разряда
 							var ranks = data.ranks;
 							//селект лично там не лично
@@ -130,14 +130,14 @@
 								}		
 								$(".athlete").append( $("<option value= '" + athletes[i].id + "'" + selected + ">" + athletes[i].last_name + " " + athletes[i].first_name.charAt(0) + "." + athletes[i].middle_name.charAt(0) +  ".</option>'"));
 							}
-							for(i = 0; i < athletics.length; i++) {		
+							/*for(i = 0; i < athletics.length; i++) {		
 								if (setValue && setValue[2] == athletics[i].name) {
 									selected = ' selected ';
 								} else {
 									selected = '';
 								}		
 								$(".athleticsType").append( $("<option value= '" + athletics[i].id + "'" + selected + ">" + athletics[i].name + "</option>'"));
-							}
+							}*/
 							for(i = 0; i < ranks.length; i++) {		
 								if (setValue && setValue[4] == ranks[i].name) {
 									selected = ' selected ';
@@ -197,6 +197,43 @@
 		showDataForm('add');
 	});
 
+	// Check competition types
+	$('#checkTypes').click(function(){
+		var request = {
+			competition: $('#competitionsSelect').val(),
+			athlete: $('#athleteSelect').val()
+		}
+		console.log($('#competitionsSelect').val());
+		console.log($('#athleteSelect').val());
+		$.ajax({		
+			url: "/" + pageName,			
+			type: "POST",	
+			dataType: 'json',		
+			contentType: "application/json",
+			data: JSON.stringify(request),				 
+			success: function(data, textStatus, xhr){
+				if(xhr.status == '200')  {		
+					$('.athleticsType').empty();	
+					var athletics = data.athletics;
+					for(i = 0; i < athletics.length; i++) {		
+						if (setValue && setValue[2] == athletics[i].name) {
+							selected = ' selected ';
+						} else {
+							selected = '';
+						}		
+						$(".athleticsType").append( $("<option value= '" + athletics[i].id + "'" + selected + ">" + athletics[i].name + "</option>'"));
+					}				
+				}							
+			},
+			complete: function(xhr, textStatus) {
+				if (xhr.status == '500') {
+					console.log('Options err: ');
+					console.log(xhr);
+				}
+			} 					
+		});	
+	});
+
 	
 	//Скрипт для добавления строки в таблицу
 	$('#addRow').click(function(){	
@@ -230,7 +267,7 @@
 				success: function(data, textStatus, xhr){
 					if(xhr.status == '200')  {			
 						$(".showDataForm").before('<tr' + ' data-id="' + data.id + '"></tr>');
-						var $addedRow = $('#table tbody tr').eq(-3);	
+						var $addedRow = $('#table tbody > tr:eq(-2)');	
 						data.row.forEach(function(item){				
 							$addedRow.append('<td>' + item + '</td>');							
 						});			

@@ -14,8 +14,10 @@ exports.get = function(req, res) {
     
     if (agent) {
         db.getAgentAthleteCards(user.id).then(athleteCards => {
+            console.log(4);
+            console.log(athleteCards);
             var outAthleteCards = [];
-            athleteCards.forEach(function(athleteCard) {
+            /*athleteCards.forEach(function(athleteCard) {
                 var competitionName;
                 if(athleteCard.competition) {
                     competitionName = athleteCard.competition.name;
@@ -26,12 +28,12 @@ exports.get = function(req, res) {
                     id: athleteCard.id,
                     competition: competitionName,
                     athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athleteCard.athlete.middle_name.charAt(0) + ".",
-                    athletics: athleteCard.athletics_type.name,
+                    athletics: athleteCards.competition_type.athletics_type.name,
                     result: athleteCard.current_result,
                     rank: athleteCard.rank.name,
                     appearence: athleteCard.appearence.name
                 });
-            });
+            });*/
 
             res.render('athlete_card.hbs', {
                 title: 'Карточки спортсменов',
@@ -95,13 +97,13 @@ exports.getOptions = function(req, res) {
     if (agent) {
         db.getAgentAthletes(user.id).then(athletes => {
             db.getCompetitions().then(competitions => {
-                db.getAthleticsTypes().then(athletics => {
+                //db.getAthleticsTypes().then(athletics => {
                     db.getRank().then(ranks => {
                         db.getAppearence().then(appearences => {
                             var data = {};
                             data.athletes = athletes;
                             data.competitions = competitions;
-                            data.athletics = athletics;
+                            //data.athletics = athletics;
                             data.ranks = ranks;
                             data.appearences = appearences;
                             res.status(200);
@@ -113,9 +115,9 @@ exports.getOptions = function(req, res) {
                     }).catch(() => {
                         res.sendStatus(500)
                     });
-                }).catch(() => {
-                    res.sendStatus(500)
-                });
+                //}).catch(() => {
+                //    res.sendStatus(500)
+                //});
             }).catch(() => {
                 res.sendStatus(500)
             });

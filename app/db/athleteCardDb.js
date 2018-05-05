@@ -7,20 +7,30 @@ var functions = require('./functions');
 exports.getAgentAthleteCards = function(user_id){
     return new Promise ((resolve, reject) => {
         models.sequelize.sync().then(() => {
-            models.athlete_card.findAll({
-                include: [
-                    { model: models.athlete, where: { user_id: user_id }},
-                    { model: models.competition },
-                    { model: models.athletics_type },
-                    { model: models.rank },
-                    { model: models.appearence }
-                ]
-            }).then(objects => {
-                if (objects) {
-                    resolve(objects);
-                }
+            models.organization.findOne({
+                where: { user_id: user_id }
+            }).then(organization => {
+                models.athlete.findAll({
+                    where: { organization_id: organization.id },
+                    include: [
+                        { 
+                            model: models.athlete_card, 
+                            include: [
+                                { model: models.competition_type, include: [{ model: models.athletics_type }] },
+                                { model: models.rank },
+                                { model: models.appearence }
+                            ]
+                        }
+                    ]
+                }).then(objects => {
+                    if (objects) {
+                        resolve(objects);
+                    }
+                    reject([]);
+                })
+            }).catch(()=> {
                 reject([]);
-            })
+            });
         }).catch(()=> {
             reject([]);
         })
@@ -34,8 +44,7 @@ exports.getAthleteCards = function(){
             models.athlete_card.findAll({
                 include: [
                     { model: models.athlete},
-                    { model: models.competition },
-                    { model: models.athletics_type },
+                    //{ model: models.athletics_type },
                     { model: models.rank },
                     { model: models.appearence }
                 ]
@@ -57,7 +66,7 @@ exports.addAgentAthleteCard = function (params, user_id) {
         models.athlete_card.create({
             competition_id: params[0],
             athlete_id: params[1],
-            athletics_type_id: params[2],
+            //athletics_type_id: params[2],
             current_result: params[3],
             rank_id: params[4],
             appearence_id: params[5]
@@ -87,7 +96,7 @@ exports.changeAgentAthleteCard = function (params, change_id, user_id) {
                 models.athlete_card.update({
                     competition_id: params[0],
                     athlete_id: params[1],
-                    athletics_type_id: params[2],
+                    //athletics_type_id: params[2],
                     current_result: params[3],
                     rank_id: params[4],
                     appearence_id: params[5]
