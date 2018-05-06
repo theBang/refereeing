@@ -193,8 +193,17 @@
 
 						if (tNum == 4) {
 							$('.competition').empty();
+							$('.type').empty();
+							$('.gender').empty();
+							$('.qualification').empty();
 							//селект соревнований
 							var competitions = data.competitions;
+							var types = data.athletics;
+							var genders = data.genders;
+							var qualifications = data.qualifications;
+
+							console.log(data);
+
 							var i;
 							for(i = 0; i < competitions.length; i++) {		
 								if (setValue && setValue[0] == competitions[i].name) { 
@@ -204,6 +213,36 @@
 								}	
 
 								$(".competition").append( $("<option value= '" + competitions[i].id + "'" + selected + ">" + competitions[i].name + "</option>'"));
+							}
+
+							for(i = 0; i < types.length; i++) {		
+								if (setValue && setValue[1] == types[i].name) { 
+									selected = ' selected '; 
+								} else { 
+									selected = ''; 
+								}	
+
+								$(".type").append( $("<option value= '" + types[i].id + "'" + selected + ">" + types[i].name + "</option>'"));
+							}
+
+							for(i = 0; i < genders.length; i++) {		
+								if (setValue && setValue[2] == genders[i].name) { 
+									selected = ' selected '; 
+								} else { 
+									selected = ''; 
+								}	
+
+								$(".gender").append( $("<option value= '" + genders[i].id + "'" + selected + ">" + genders[i].gender_type + "</option>'"));
+							}
+
+							for(i = 0; i < qualifications.length; i++) {		
+								if (setValue && setValue[3] == qualifications[i].name) { 
+									selected = ' selected '; 
+								} else { 
+									selected = ''; 
+								}	
+
+								$(".qualification").append( $("<option value= '" + qualifications[i].bool + "'" + selected + ">" + qualifications[i].name + "</option>'"));
 							}
 						}
 					}
@@ -232,15 +271,23 @@
 		showDataForm('add');
 	});
 
+	
+
+	$('#competitionsSelect').on('change', function () {
+		checkTypes();
+	});
+
+	$('#athleteSelect').on('change', function () {
+		checkTypes();
+	});
+
 	// Check competition types
-	$('#checkTypes').click(function(){
+	function checkTypes(){
 		var request = {
 			competition: $('#competitionsSelect').val(),
 			athlete: $('#athleteSelect').val()
 		}
-		console.log($('#competitionsSelect').val());
-		console.log($('#athleteSelect').val());
-		console.log(request);
+
 		$.ajax({		
 			url: "/" + pageName + "check",			
 			type: "POST",	
@@ -252,15 +299,8 @@
 					$('#athleticsType').empty();	
 					var athletics = data.athletics;
 					for(i = 0; i < athletics.length; i++) {		
-						/*if (setValue && setValue[2] == athletics[i].name) {
-							selected = ' selected ';
-						} else {
-							selected = '';
-						}		*/
-						console.log("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'");		
 						$("#athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'"));
-					}		
-					console.log(data);		
+					}			
 				}							
 			},
 			complete: function(xhr, textStatus) {
@@ -270,7 +310,7 @@
 				}
 			} 					
 		});	
-	});
+	}
 
 	
 	//Скрипт для добавления строки в таблицу

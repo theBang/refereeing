@@ -16,6 +16,12 @@ exports.get = function(req, res) {
         db.getCompetitionTypes().then(competitionTypes => {
             var outCompetitionTypes = [];
             competitionTypes.forEach(competitionType => {
+                let qualification;
+                if (competitionType.qualification) {
+                    qualification = 'Есть';
+                } else {
+                    qualification = 'Нет'
+                }
                 outCompetitionTypes.push({
                     id: competitionType.id,
                     competition: competitionType.competition.name,
@@ -24,25 +30,17 @@ exports.get = function(req, res) {
                     qualification: qualification
                 });
             });
-            db.getAthleticsTypes().then(athletics => {
-                db.getGenders().then(genders => {
-                    res.render('competition_type.hbs', {
-                        title: 'Вид на соревнованиях',
-                        tableHead: tableHead,
-                        competitionTypes: outCompetitionTypes,
-                        athletics: athletics,
-                        genders: genders,
-                        username: user.email,
-                        admin: admin,
-                        judge: judge,
-                        agent: agent
-                    });
-                }).catch(() => {
-                    res.sendStatus(500);
-                })
-            }).catch(() => {
-                res.sendStatus(500)
-            }); 
+            
+            res.render('competition_type.hbs', {
+                title: 'Вид на соревнованиях',
+                tableHead: tableHead,
+                competitionTypes: outCompetitionTypes,
+                username: user.email,
+                admin: admin,
+                judge: judge,
+                agent: agent
+            });
+        
         })
         .catch (() => {
             res.sendStatus(500);
@@ -59,11 +57,31 @@ exports.getOptions = function(req, res) {
     if(role == 'agent') { agent = true; }
     if (judge) {
         db.getCompetitions().then(competitions => {
-            var data = {};
-            data.competitions = competitions;
-            res.status(200);
-            res.setHeader("Content-Type", "application/json");
-            res.send(JSON.stringify(data));
+            db.getGenders().then(genders => {
+                db.getAthleticsTypes().then(athletics => {
+                    var data = {};
+                    data.qualifications = [
+                        {
+                            bool: true,
+                            name: 'Есть'
+                        },
+                        {
+                            bool: false,
+                            name: 'Нет'
+                        }
+                    ]
+                    data.competitions = competitions;
+                    data.genders = genders;
+                    data.athletics = athletics;
+                    res.status(200);
+                    res.setHeader("Content-Type", "application/json");
+                    res.send(JSON.stringify(data));
+                }).catch(() => {
+                    res.sendStatus(500)
+                });
+            }).catch(() => {
+                res.sendStatus(500)
+            });
         }).catch(() => {
             res.sendStatus(500)
         });
