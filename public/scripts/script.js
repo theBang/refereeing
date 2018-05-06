@@ -98,10 +98,9 @@
 							console.log(data);
 							$('.competition').empty();
 							$('.athlete').empty();
-							//$('.athleticsType').empty();
+							$('#athleticsType').empty();
 							$('.rank').empty();
 							$('.appearences').empty();
-							
 							//селект соревнований
 							var competitions = data.competitions;
 							//селект спортсменов
@@ -111,7 +110,7 @@
 							//селект разряда
 							var ranks = data.ranks;
 							//селект лично там не лично
-							var appearences = data.appearences;
+							//var appearences = data.appearences;
 							console.log(athletes[0].first_name);
 							var i;
 							for(i = 0; i < competitions.length; i++) {		
@@ -122,6 +121,7 @@
 								}		
 								$(".competition").append( $("<option value= '" + competitions[i].id + "'" + selected + ">" + competitions[i].name + "</option>'"));
 							}
+
 							for(i = 0; i < athletes.length; i++) {		
 								if (setValue && setValue[1] == athletes[i].last_name) {
 									selected = ' selected ';
@@ -130,6 +130,41 @@
 								}		
 								$(".athlete").append( $("<option value= '" + athletes[i].id + "'" + selected + ">" + athletes[i].last_name + " " + athletes[i].first_name.charAt(0) + "." + athletes[i].middle_name.charAt(0) +  ".</option>'"));
 							}
+
+							var request = {
+								competition: $('#competitionsSelect').val(),
+								athlete: $('#athleteSelect').val()
+							}
+
+							$.ajax({		
+								url: "/" + pageName + "check",			
+								type: "POST",	
+								dataType: 'json',		
+								contentType: "application/json",
+								data: JSON.stringify(request),				 
+								success: function(data, textStatus, xhr){
+									if(xhr.status == '200')  {	
+										$('#athleticsType').empty();	
+										var athletics = data.athletics;
+										for(i = 0; i < athletics.length; i++) {		
+											if (setValue && setValue[2] == athletics[i].athletics_type.name) {
+												selected = ' selected ';
+											} else {
+												selected = '';
+											}		
+											console.log("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'");		
+											$("#athleticsType").append( $("<option value= '" + athletics[i].id + "'" + selected + ">" + athletics[i].athletics_type.name + "</option>'"));
+										}		
+										console.log(data);		
+									}							
+								},
+								complete: function(xhr, textStatus) {
+									if (xhr.status == '500') {
+										console.log('Options err: ');
+										console.log(xhr);
+									}
+								} 					
+							});	
 							/*for(i = 0; i < athletics.length; i++) {		
 								if (setValue && setValue[2] == athletics[i].name) {
 									selected = ' selected ';
@@ -146,14 +181,14 @@
 								}		
 								$(".rank").append( $("<option value= '" + ranks[i].id + "'" + selected + ">" + ranks[i].name + "</option>'"));
 							}
-							for(i = 0; i < appearences.length; i++) {		
+							/*for(i = 0; i < appearences.length; i++) {		
 								if (setValue && setValue[5] == appearences[i].name) {
 									selected = ' selected ';
 								} else {
 									selected = '';
 								}		
 								$(".appearences").append( $("<option value= '" + appearences[i].id + "'" + selected + ">" + appearences[i].name + "</option>'"));
-							}
+							}*/
 						}
 
 						if (tNum == 4) {
@@ -205,24 +240,27 @@
 		}
 		console.log($('#competitionsSelect').val());
 		console.log($('#athleteSelect').val());
+		console.log(request);
 		$.ajax({		
-			url: "/" + pageName,			
+			url: "/" + pageName + "check",			
 			type: "POST",	
 			dataType: 'json',		
 			contentType: "application/json",
 			data: JSON.stringify(request),				 
 			success: function(data, textStatus, xhr){
 				if(xhr.status == '200')  {		
-					$('.athleticsType').empty();	
+					$('#athleticsType').empty();	
 					var athletics = data.athletics;
 					for(i = 0; i < athletics.length; i++) {		
-						if (setValue && setValue[2] == athletics[i].name) {
+						/*if (setValue && setValue[2] == athletics[i].name) {
 							selected = ' selected ';
 						} else {
 							selected = '';
-						}		
-						$(".athleticsType").append( $("<option value= '" + athletics[i].id + "'" + selected + ">" + athletics[i].name + "</option>'"));
-					}				
+						}		*/
+						console.log("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'");		
+						$("#athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'"));
+					}		
+					console.log(data);		
 				}							
 			},
 			complete: function(xhr, textStatus) {
@@ -302,16 +340,13 @@
 			data: JSON.stringify(inputData),				 
 			success: function(data, textStatus, xhr){
 				if(xhr.status == '200')  { 
+					console.log('ccool');
 					$changedRow.remove(); 
 				}								
 			},
 			complete: function(xhr, textStatus) {
 				if (xhr.status == '500') {
-					if (pageName == 'athlete') {
-						alert("Сначала удалите карточки этого спортсмена");
-					} else {
-						alert("Произошла ошибка при удалении!");
-					}					
+					alert("Произошла ошибка при удалении!");			
 				}
 			} 				
 		});

@@ -26,7 +26,7 @@
                                 </select>
                                 <input class = "btn btn-primary" id="checkTypes" type="button" value="Проверить виды"/>
                                 <label for="athleticsType">Вид спорта</label>  
-                                <select class="form-control athleticsType">
+                                <select class="form-control" id="athleticsType">
                                                                      
                                 </select>
                                 <label for="best_time">Лучший результат</label>
@@ -35,10 +35,6 @@
                             <label for="rank">Разряд</label>  
                             <select class="form-control rank">
                                                                   
-                            </select>     
-                            <label for="appearences">Вид выступления</label>  
-                            <select class="form-control appearences">
-                                                              
                             </select>       
                         </div>    
                     </div>
@@ -75,7 +71,6 @@
                                             <td>{{this.athletics}}</td>
                                             <td>{{this.result}}</td>
                                             <td>{{this.rank}}</td>
-                                            <td>{{this.appearence}}</td>
                                             <td>
                                                 <button class="btn btn-primary changeRow">Изменить</button>
                                                 <button class="btn btn-danger deleteRow">Удалить</button>
@@ -84,7 +79,6 @@
                                     {{/each}}
                                     <tr class="showDataForm">
                                         <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

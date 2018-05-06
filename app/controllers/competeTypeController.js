@@ -16,20 +16,9 @@ exports.get = function(req, res) {
         db.getCompetitionTypes().then(competitionTypes => {
             var outCompetitionTypes = [];
             competitionTypes.forEach(competitionType => {
-                var competitionName, qualification;
-                if(competitionType.competition) {
-                    competitionName = competitionType.competition.name;
-                } else {
-                    competitionName = 'Соревнования были удалены';
-                }
-                if(competitionType.qualification) {
-                    qualification = 'Есть';
-                } else {
-                    qualification = 'Нет';
-                }
                 outCompetitionTypes.push({
                     id: competitionType.id,
-                    competition: competitionName,
+                    competition: competitionType.competition.name,
                     athletics: competitionType.athletics_type.name,
                     gender: competitionType.gender_type.gender_type,
                     qualification: qualification
@@ -129,15 +118,10 @@ exports.delete = function(req, res) {
 
 function returnCompetitionType(competitionTypePromise, res) {
     competitionTypePromise.then(competitionType => {
-        console.log(1);
         db.getCompetitionById(competitionType.competition_id).then(competition => {
-            console.log(2);
             db.getAthleticsTypeById(competitionType.athletics_type_id).then(athletic => {
-                console.log(3);
                 db.getGenderById(competitionType.gender_type_id).then(gender => {
-                    console.log(4);
                     if (competitionType) {
-                        console.log(5);
                         let qualification;
                         if (competitionType.qualification) {
                             qualification = 'Есть';

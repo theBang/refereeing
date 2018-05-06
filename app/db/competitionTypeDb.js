@@ -25,6 +25,22 @@ exports.getCompetitionTypes = function(){
     });
 };
 
+// GET Competition Type By Id
+exports.getCompetitionTypeById = function(id){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            functions.getObjectById(models.competition_type, id).then(object => {
+                if (object) {
+                    resolve(object);
+                }
+                reject({});
+            })
+        }).catch(()=> {
+            reject({});
+        })
+    });
+};
+
 // Add Competition Type
 exports.addCompetitionType = function (params) {
     return new Promise ((resolve, reject) => {
@@ -78,3 +94,4 @@ exports.changeCompetitionType = function (params, change_id) {
 exports.deleteCompetitionType = function (delete_id) {
     return functions.deleteObjectById(models.competition_type, delete_id);
 }
+

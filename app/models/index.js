@@ -22,12 +22,14 @@ db.rank = require('./rank')(sequelize, Sequelize);
 //Organization
 db.organization = require('./organization')(sequelize, Sequelize, db.user);  
 db.organization.belongsTo(db.user, {foreignKey: 'user_id'});
+db.user.hasMany(db.organization, { onDelete: 'cascade', foreignKey: 'user_id' });
 
 //Athlete
 db.city = require('./city')(sequelize, Sequelize);
 db.athlete = require('./athlete')(sequelize, Sequelize);
-db.athlete.belongsTo( db.gender_type, {foreignKey: 'gender_type_id'});
+db.athlete.belongsTo(db.gender_type, {foreignKey: 'gender_type_id'});
 db.athlete.belongsTo(db.organization, {foreignKey: 'organization_id'});
+db.organization.hasMany(db.athlete, { onDelete: 'cascade', foreignKey: 'organization_id' });
 db.athlete.belongsTo(db.city, {foreignKey: 'city_id'});
 
 // ---------- Competition --------------
@@ -38,8 +40,11 @@ db.athletics_type.belongsTo(db.record, {foreignKey: 'record_id'});
 
 //Competition
 db.competition = require('./competition')(sequelize, Sequelize);
+
+//Competition Type
 db.competition_type = require('./competition_type')(sequelize, Sequelize);
 db.competition_type.belongsTo(db.competition, { foreignKey: 'competition_id'});
+db.competition.hasMany(db.competition_type, { onDelete: 'cascade', foreignKey: 'competition_id' });
 db.competition_type.belongsTo(db.athletics_type, {foreignKey: 'athletics_type_id'});
 db.competition_type.belongsTo(db.gender_type, {foreignKey: 'gender_type_id'});
 
@@ -47,6 +52,7 @@ db.competition_type.belongsTo(db.gender_type, {foreignKey: 'gender_type_id'});
 db.appearence = require('./appearence')(sequelize, Sequelize);
 db.athlete_card = require('./athlete_card')(sequelize, Sequelize);
 db.athlete_card.belongsTo(db.competition_type, {foreignKey: 'competition_type_id'});
+db.competition_type.hasMany(db.athlete_card, { onDelete: 'cascade', foreignKey: 'competition_type_id' });
 db.athlete_card.belongsTo(db.rank, {foreignKey: 'rank_id'});
 db.athlete_card.belongsTo(db.appearence, {foreignKey: 'appearence_id'});
 db.athlete.hasMany(db.athlete_card, { onDelete: 'cascade', foreignKey: 'athlete_id' });

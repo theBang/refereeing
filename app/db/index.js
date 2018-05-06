@@ -26,6 +26,7 @@ exports.deleteCompetition = competitionDb.deleteCompetition;
 var competitionTypeDb = require('./competitionTypeDb');
 
 exports.getCompetitionTypes = competitionTypeDb.getCompetitionTypes;
+exports.getCompetitionTypeById = competitionTypeDb.getCompetitionTypeById;
 exports.addCompetitionType = competitionTypeDb.addCompetitionType;
 exports.changeCompetitionType = competitionTypeDb.changeCompetitionType;
 exports.deleteCompetitionType = competitionTypeDb.deleteCompetitionType;
@@ -39,6 +40,7 @@ exports.getAthleteCards = athleteCardDb.getAthleteCards;
 exports.addAgentAthleteCard = athleteCardDb.addAgentAthleteCard;
 exports.changeAgentAthleteCard = athleteCardDb.changeAgentAthleteCard;
 exports.deleteAgentAthleteCard = athleteCardDb.deleteAgentAthleteCard;
+exports.getCardAthletics = athleteCardDb.getCardAthletics;
 
 /* -------------- Other Models -------------- */
 

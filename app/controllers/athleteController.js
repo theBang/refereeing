@@ -161,19 +161,17 @@ exports.delete = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
     if (agent) {
-        db.deleteAthlete(req.body.id, user.id)
-            .then(deleted => {
-                if (deleted) {
-                    res.status(200);
-                    res.setHeader("Content-Type", "application/json");
-                    res.send(JSON.stringify({ id: req.body.id }));
-                } else {
-                    res.sendStatus(500);
-                }
-            })
-            .catch (() => {
+        db.deleteAthlete(req.body.id, user.id).then(deleted => {
+            if (deleted) {
+                res.status(200);
+                res.setHeader("Content-Type", "application/json");
+                res.send(JSON.stringify({ id: req.body.id }));
+            } else {
                 res.sendStatus(500);
-            });    
+            }
+        }).catch (() => {
+            res.sendStatus(500);
+        });    
     }
 }
 

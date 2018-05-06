@@ -144,7 +144,18 @@ exports.deleteAthlete = function (delete_id, user_id) {
             }).then(organization => {
                 functions.getObjectById(models.athlete, delete_id).then(athlete => {
                     if(athlete.organization_id == organization.id) {
-                        return functions.deleteObjectById(models.athlete, delete_id);
+                        models.athlete.destroy({
+                            where: {
+                                id: delete_id
+                            }
+                        }).then(object => {
+                            if (object) {
+                                resolve(true);
+                            }
+                            reject(false);
+                        }).catch(()=> {
+                            reject(false);
+                        });
                     } else {
                         reject(false);
                     }
