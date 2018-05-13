@@ -40,6 +40,8 @@ var mainRoute = require('./app/routes/main')(app);
 var athleteRoute = require('./app/routes/athlete')(app);
 var athleteCardRoute = require('./app/routes/athleteCard')(app);
 var competeTypeRoute = require('./app/routes/competeType')(app);
+var runResultRoute = require('./app/routes/run')(app);
+var genderRoute = require('./app/routes/gender')(app);
 //Load passport strategies
 require('./app/config/passport/passport')(passport, models.user, models.organization);
 

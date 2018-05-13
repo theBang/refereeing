@@ -57,8 +57,7 @@ exports.getUnsigned = function(req, res) {
         'Главный секретарь'
     ];
     
-    db.getCompetitions()
-        .then(competitions => {
+    db.getCompetitions().then(competitions => {
             competitions.forEach(competition => {
                 competition.competition_date_start = competition.competition_date_start.toDateString();
             });
@@ -86,6 +85,22 @@ exports.add = function(req, res) {
     if(role == 'agent') { agent = true; }
     if (admin || judge) { 
         returnCompetition(db.addCompetition(req.body.object), res); 
+    }
+}
+
+exports.start = function(req, res) {
+    var user = req.user;
+    var role = user.role;
+    var admin = false, judge = false, agent = false;
+    if(role == 'admin') { admin = true; }
+    if(role == 'judge') { judge = true; }
+    if(role == 'agent') { agent = true; }
+    if (judge) {
+        db.startCompetition(req.body.competition_id).then(() => {
+            res.sendStatus(200);
+        }).catch (() => {
+            res.sendStatus(500);
+        });
     }
 }
 

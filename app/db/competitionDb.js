@@ -36,6 +36,21 @@ exports.addCompetition = function (params) {
     })
 };
 
+// START Competition
+exports.startCompetition = function (competition_id) {
+    return new Promise ((resolve, reject) => {
+        models.sequelize.query('execute toArrangeRuns \''+ competition_id + '\';')
+            .spread(function(result) {
+                console.log('RESULT', result);
+                resolve(true);
+            })
+            .error(function(err) {
+                console.log('ERR', err);
+                reject(false);
+            });
+    })
+};
+
 // CHANGE Competition
 exports.changeCompetition = function (params, change_id) {
     return new Promise ((resolve, reject) => {
@@ -68,3 +83,21 @@ exports.changeCompetition = function (params, change_id) {
 exports.deleteCompetition = function (delete_id) {
     return functions.deleteObjectById(models.competition, delete_id);
 };
+
+//GET Competition Types which fit for Competition
+exports.getCompetitionAthletics = function (competition_id) {
+    return new Promise ((resolve, reject) => {
+        models.competition_type.findAll({
+            where: { competition_id: competition_id },
+            include: [{ model: models.athletics_type }]
+        }).then(competitionTypes => {
+            if (competitionTypes) {
+                resolve(competitionTypes);
+            } else {
+                reject([]);
+            }
+        }).catch(()=> {
+            reject([]);
+        });
+    });
+}

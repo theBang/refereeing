@@ -3,7 +3,7 @@ var athleteCardController = require('../controllers/athleteCardController');
 module.exports = function(app) {
     app.get('/athletecard', isLoggedIn, athleteCardController.get);
     app.get('/athletecards', isLoggedIn, athleteCardController.getOptions);
-    app.post('/athletecardcheck', isLoggedIn, athleteCardController.checkAthletics);
+    app.post('/athletecardchecktype', isLoggedIn, athleteCardController.checkAthletics);
 
     app.post('/athletecard', isLoggedIn, athleteCardController.add);
     app.delete('/athletecard', isLoggedIn, athleteCardController.delete);

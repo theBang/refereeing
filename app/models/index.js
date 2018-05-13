@@ -47,6 +47,10 @@ db.competition_type.belongsTo(db.competition, { foreignKey: 'competition_id'});
 db.competition.hasMany(db.competition_type, { onDelete: 'cascade', foreignKey: 'competition_id' });
 db.competition_type.belongsTo(db.athletics_type, {foreignKey: 'athletics_type_id'});
 db.competition_type.belongsTo(db.gender_type, {foreignKey: 'gender_type_id'});
+sequelize.queryInterface.addConstraint('competition_types', ['competition_id', 'athletics_type_id', 'gender_type_id'], {
+    type: 'unique',
+    name: 'compete_athletics_gender_unique'
+});
 
 // ---------- AthleteCard --------------
 db.appearence = require('./appearence')(sequelize, Sequelize);
@@ -57,6 +61,14 @@ db.athlete_card.belongsTo(db.rank, {foreignKey: 'rank_id'});
 db.athlete_card.belongsTo(db.appearence, {foreignKey: 'appearence_id'});
 db.athlete.hasMany(db.athlete_card, { onDelete: 'cascade', foreignKey: 'athlete_id' });
 db.athlete_card.belongsTo(db.athlete, { foreignKey: 'athlete_id' });
+/*sequelize.queryInterface.addConstraint('athlete_cards', ['number', 'competition_type_id'], {
+    type: 'unique',
+    name: 'compete_number_unique'
+});*/
+sequelize.queryInterface.addConstraint('athlete_cards', ['athlete_id', 'competition_type_id'], {
+    type: 'unique',
+    name: 'compete_number_unique'
+});
 
 // ---------- Results --------------
 // ---------- Run --------------
@@ -77,8 +89,7 @@ db.try_result = require('./try_result')(sequelize, Sequelize);
 db.try_result.belongsTo(db.athlete_card, {foreignKey: 'athlete_card_id'});
 db.try_result.belongsTo(db.try, {foreignKey: 'try_id'});
 
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
- 
+
 module.exports = db;

@@ -1,52 +1,69 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     {{> head}}
-    <title>{{title}}</title>
-  </head>
-  <body>
-        <div id="wrapper">            
-                {{> menu}}
-             
-                <div id="page-content-wrapper">
-                    <div class="container-fluid">
-                        <h1>{{title}}</h1>
-                        <p>Тут какое то интересное описание</p>                        
-                        <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Список таблиц</a>
-                            <div class="div-table">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                        {{#each tableHead}}
-                                            <th>{{this}}</th>
-                                        {{/each}}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{#each genders}}
-                                            <tr>
-                                                <td>{{this.id}}</td>
-                                                <td>{{this.gender_participant}}</td>
-                                                <td>
-                                                    <button class="btn btn-primary" type="submit">Изменить</button>
-                                                    <button class="btn btn-danger" type="submit">Удалить</button>
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        <tr>
-                                            <td><button class="btn btn-primary" type="submit">Добавить</button></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                    </div>
-                </div>              
-        
-            </div>           
-                           
-            {{> script}}
 
-    </body>
+    <title>{{title}}</title>
+</head>
+<body>
+{{> menu_signed}}
+<div id="dataform-wrapper">
+    <div id="dataForm">
+        <form id="my_form">
+            <div class="form-group">
+                <legend class="m-b-1">Добавить пол</legend>
+                <div class="form-group ">
+                    <label for="last">ID</label>
+                    <input class="form-control" id="last" type="text" placeholder="ID" value="999" readonly/>
+                    <label for="first">Пол</label>
+                    <input class="form-control" id="first" type="text" placeholder="Пол"/>
+                </div>
+            </div>
+            <input class = "btn btn-primary" id="addRow" type="button" value="Добавить"/>
+            <input class = "btn btn-primary" id="changeRow" type="button" value="Изменить" />
+            <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена" />
+        </form>
+    </div>
+</div>
+<div id="overlay"></div>
+<div id="wrapper">
+    {{> table_nav}}
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <h1>{{title}}</h1>
+            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+            <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+            <div class="div-table">
+                <table class="table table-hover"  id = "table">
+                    <thead>
+                    <tr>
+                        {{#each tableHead}}
+                            <th>{{this}}</th>
+                        {{/each}}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each genders}}
+                        <tr data-id="{{this.id}}">
+                            <td>{{this.id}}</td>
+                            <td>{{this.gender}}</td>
+                            <td>
+                                <button class="btn btn-primary changeRow">Изменить</button>
+                                <button class="btn btn-danger deleteRow">Удалить</button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    <tr class="showDataForm">
+                        <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{> script}}
+</body>
 </html>

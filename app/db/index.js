@@ -20,6 +20,8 @@ exports.getCompetitionById = competitionDb.getCompetitionById;
 exports.addCompetition = competitionDb.addCompetition;
 exports.changeCompetition = competitionDb.changeCompetition;
 exports.deleteCompetition = competitionDb.deleteCompetition;
+exports.getCompetitionAthletics = competitionDb.getCompetitionAthletics;
+exports.startCompetition = competitionDb.startCompetition;
 
 /* -------------- Competition Types -------------- */
 
@@ -30,6 +32,8 @@ exports.getCompetitionTypeById = competitionTypeDb.getCompetitionTypeById;
 exports.addCompetitionType = competitionTypeDb.addCompetitionType;
 exports.changeCompetitionType = competitionTypeDb.changeCompetitionType;
 exports.deleteCompetitionType = competitionTypeDb.deleteCompetitionType;
+exports.getCompetitionTypeByCompetition = competitionTypeDb.getCompetitionTypeByCompetition;
+exports.getCompetitionTypeAthleticsGender = competitionTypeDb.getCompetitionTypeAthleticsGender;
 
 /* -------------- Athlete Card -------------- */
 
@@ -42,6 +46,12 @@ exports.changeAgentAthleteCard = athleteCardDb.changeAgentAthleteCard;
 exports.deleteAgentAthleteCard = athleteCardDb.deleteAgentAthleteCard;
 exports.getCardAthletics = athleteCardDb.getCardAthletics;
 
+/* -------------- Athlete -------------- */
+
+var runDb = require('./runDb');
+
+exports.getCompetitionTypesResults = runDb.getCompetitionTypesResults;
+
 /* -------------- Other Models -------------- */
 
 var otherDb = require('./otherDb');
@@ -49,10 +59,14 @@ var otherDb = require('./otherDb');
 exports.getUsers = otherDb.getUsers;
 
 exports.getOrg = otherDb.getOrg;
+exports.addOrganization = otherDb.addOrganization;
+exports.changeOrganization = otherDb.changeOrganization;
+exports.deleteCompetition = otherDb.deleteCompetition;
 exports.getOrgById = otherDb.getOrgById;
 
 exports.getGenders = otherDb.getGenders;
 exports.getGenderById = otherDb.getGenderById;
+exports.addGender = otherDb.addGender;
 
 exports.getCities = otherDb.getCities;
 exports.getCityById = otherDb.getCityById;

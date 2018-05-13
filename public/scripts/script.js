@@ -7,6 +7,7 @@
 	console.log(pageName);
 	var tNum;
 	var buttons = "<td>\n<button class = 'btn btn-primary changeRow'>Изменить</button>\n<button class = 'btn btn-danger deleteRow'>Удалить</button>\n</td>";
+	var competitonButtons = "<td>\n<button class = 'btn btn-primary changeRow'>Изменить</button>\n<button class = 'btn btn-danger deleteRow'>Удалить</button>\n<button class=\"btn btn-primary startCompetition\">Начать</button>\n</td>"
 
 	switch(pageName){
 		
@@ -283,23 +284,35 @@
 
 	// Check competition types
 	function checkTypes(){
-		var request = {
-			competition: $('#competitionsSelect').val(),
-			athlete: $('#athleteSelect').val()
+		var request = {};
+		
+		request.competition = $('#competitionsSelect').val();
+
+		if(pageName == 'athletecard') {
+			request.athlete = $('#athleteSelect').val();
 		}
 
-		$.ajax({		
-			url: "/" + pageName + "check",			
+		console.log(request);
+        $('#athleticsType').empty();
+
+        $.ajax({
+			url: "/" + pageName + "checktype",			
 			type: "POST",	
 			dataType: 'json',		
 			contentType: "application/json",
 			data: JSON.stringify(request),				 
 			success: function(data, textStatus, xhr){
-				if(xhr.status == '200')  {		
+				if(xhr.status == '200')  {
+
 					$('#athleticsType').empty();	
 					var athletics = data.athletics;
-					for(i = 0; i < athletics.length; i++) {		
-						$("#athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'"));
+					console.log(athletics);
+					for(i = 0; i < athletics.length; i++) {
+						if (pageName == 'run') {
+                            $("#athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + " - " + athletics[i].gender_type.gender_type +"</option>'"));
+                        } else {
+                            $("#athleticsType").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + "</option>'"));
+                        }
 					}			
 				}							
 			},
@@ -348,8 +361,12 @@
 						var $addedRow = $('#table tbody > tr:eq(-2)');	
 						data.row.forEach(function(item){				
 							$addedRow.append('<td>' + item + '</td>');							
-						});			
-						$addedRow.append(buttons);
+						});
+                        if (pageName == 'competition') {
+                            $addedRow.append(competitonButtons);
+                        } else {
+                            $addedRow.append(buttons);
+                        }
 						closeFormFunction();					
 					}							
 				},
@@ -379,8 +396,7 @@
 			contentType: "application/json",
 			data: JSON.stringify(inputData),				 
 			success: function(data, textStatus, xhr){
-				if(xhr.status == '200')  { 
-					console.log('ccool');
+				if(xhr.status == '200')  {
 					$changedRow.remove(); 
 				}								
 			},
@@ -453,7 +469,11 @@
 							data.row.forEach(function(item){						
 								$changedRow.append('<td>' + item + '</td>');
 							});	
-							$changedRow.append(buttons);
+							if (pageName == 'competition') {
+                                $changedRow.append(competitonButtons);
+                            } else {
+                                $changedRow.append(buttons);
+                            }
 							closeFormFunction();	 
 						}								
 					},
@@ -467,4 +487,30 @@
 			} else { alert("Произошла ошибка при изменении!"); }			
 		})
 	});
+
+	//START Competition
+    $("#table").on("click", ".startCompetition", function(){
+        $changedRow = $(this).parents("tr");
+        $rowCells = $changedRow.attr("data-id");
+        var inputData = { competition_id: $rowCells };
+        console.log(inputData);
+
+        $.ajax({
+            url: "/" + pageName + 'start',
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json",
+            data: JSON.stringify(inputData),
+            success: function(data, textStatus, xhr){
+                if(xhr.status == '200')  {
+                    alert("Соревнования начаты!");
+                }
+            },
+            complete: function(xhr, textStatus) {
+                if (xhr.status == '500') {
+                    alert("Произошла ошибка при удалении!");
+                }
+            }
+        });
+    });
 })

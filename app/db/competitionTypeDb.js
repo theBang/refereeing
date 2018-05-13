@@ -95,3 +95,50 @@ exports.deleteCompetitionType = function (delete_id) {
     return functions.deleteObjectById(models.competition_type, delete_id);
 }
 
+// GET Competition Type By Competition
+exports.getCompetitionTypeByCompetition = function(competition_id){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            models.competition_type.findAll({
+                where: { competition_id: competition_id },
+                include: [
+                    { model: models.athletics_type },
+                    { model: models.gender_type }
+                ],
+                order: [
+                    ['athletics_type_id', 'DESC']
+                ]
+            }).then(competitionTypes => {
+                if (competitionTypes) {
+                    resolve(competitionTypes);
+                }
+                reject([]);
+            })
+        }).catch(()=> {
+            reject([]);
+        })
+    });
+};
+
+exports.getCompetitionTypeAthleticsGender = function(competition_id, athletics_type_id){
+    return new Promise ((resolve, reject) => {
+        models.sequelize.sync().then(() => {
+            models.competition_type.findAll({
+                where: {
+                    competition_id: competition_id,
+                    athletics_type_id: athletics_type_id
+                },
+                include: [
+                    { model: models.gender_type }
+                ]
+            }).then(competitionTypes => {
+                if (competitionTypes) {
+                    resolve(competitionTypes);
+                }
+                reject([]);
+            })
+        }).catch(()=> {
+            reject([]);
+        })
+    });
+};

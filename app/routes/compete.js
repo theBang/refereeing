@@ -2,6 +2,7 @@ var competeController = require('../controllers/competeController');
  
 module.exports = function(app) {
     app.get('/competition', isLoggedIn, competeController.get);
+    app.post('/competitionstart', isLoggedIn, competeController.start);
     app.post('/competition', isLoggedIn, competeController.add);
     app.delete('/competition', isLoggedIn, competeController.delete);
     app.put('/competition', isLoggedIn, competeController.change);
