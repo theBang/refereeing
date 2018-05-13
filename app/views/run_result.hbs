@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+
+    <title>{{title}}</title>
+    </head>
+    <body>
+        {{> menu_signed}}
+        <div id="dataform-wrapper">
+            <div id="dataForm">
+                    <form id="my_form">
+                    <div class="form-group">
+                    <legend class="m-b-1">Добавить вид на соревнованиях</legend>
+                        <div class="form-group">               
+                            <label for="competition">Соревнования</label>  
+                            <select class="form-control competition">
+                                                                
+                            </select>                    
+                        
+                            <label for="type">Вид</label>  
+                            <select class="form-control type">
+                                                                   
+                            </select>
+                            <label for="gender">Пол</label>  
+                            <select class="form-control gender">
+                             
+                            </select>
+                           
+                            <label for="qualification">Квалификация</label>
+                            <select class="form-control qualification">
+                    
+                            </select>   
+                        </div>    
+                    </div>
+                            <input class = "btn btn-primary" id="addRow" type="button" value="Добавить"/>
+                            <input class = "btn btn-primary" id="changeRow" type="button" value="Изменить" />
+                            <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена"/>
+                    </form>
+            </div> 
+        </div> 
+
+        <div id="overlay"></div>
+        <div id="wrapper">            
+            {{> table_nav}}
+            <div id="page-content-wrapper">
+                <label for="competition">Соревнования</label>  
+                <select class="form-control competition" id="competitionsSelect">
+                    {{#each competitions}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}                                    
+                </select>                    
+                <label for="type">Вид</label>  
+                <select class="form-control type"  id="athleticsType">
+                    {{#each athletics}}
+                        <option value="{{this.id}}">{{this.athletics_type.name}} - {{this.gender_type.gender_type}}</option>
+                    {{/each}}                          
+                </select>
+                <div class="container-fluid">
+                    <h1>{{title}}</h1>
+                    <p>Спортсмены</p>     
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                    <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                        <div class="div-table">
+                            <table class="table table-hover"  id = "table">
+                                <thead>
+                                    <tr>
+                                    {{#each tableHead}}
+                                        <th>{{this}}</th>
+                                    {{/each}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{#each results}}
+                                    <tr data-id="{{this.run_result.id}}">
+                                        <td>{{this.number}}</td>
+                                        <td>{{this.run_result.track}}</td>
+                                        <td>{{this.run_result.athlete_card.athlete.lastname}}</td>
+                                        <td>
+                                            <button class="btn btn-primary changeRow">Изменить</button>
+                                            <button class="btn btn-danger deleteRow">Удалить</button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                <tr class="showDataForm">
+                                    <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>                            
+        {{> script}}
+    </body>
+</html>

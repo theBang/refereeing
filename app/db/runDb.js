@@ -28,12 +28,14 @@ exports.getInitResults = function(){
 
 exports.getCompetitionTypesResults = function (competition_type_id) {
   return new Promise((resolve, reject) => {
-      models.run.findAll({
-          where: { competition_type_id: competition_type_id },
+      models.run_result.findAll({
           include: [
-              { model: models.run_result }
+              { model: models.run, where: { competition_type_id: competition_type_id }},
+              { model: models.athlete_card, include: [{ model: models.athlete }]}
           ]
       }).then(runResults => {
+          console.log('------------------');
+          console.log(runResults);
           if (runResults) {
               resolve(runResults);
           }

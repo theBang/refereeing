@@ -8,10 +8,8 @@ exports.get = function(req, res) {
     var admin = false, judge = false, agent = false;
     var tableHead = [
         'Номер забега', 
-        'Дата проведения', 
-        'Место проведения', 
-        'Главный судья', 
-        'Главный секретарь'
+        'Номер дорожки',
+        'Спортсмен'
     ];
     if(role == 'admin') { admin = true; }
     if(role == 'agent') { agent = true; }
@@ -19,15 +17,21 @@ exports.get = function(req, res) {
         judge = true; 
         db.getCompetitions().then(competitions => {
             db.getCompetitionTypeByCompetition(competitions[0].id).then(competitionTypes => {
-                res.render('run_result.hbs', {
-                    title: 'Результаты бег',
-                    tableHead: tableHead,
-                    username: user.email,
-                    competitions: competitions,
-                    athletics: competitionTypes,
-                    admin: admin,
-                    judge: judge,
-                    agent: agent
+                db.getCompetitionTypesResults(competitionTypes[0].id).then(runResults => {
+                    console.log(runResults);
+                    res.render('run_result.hbs', {
+                        title: 'Результаты бег',
+                        tableHead: tableHead,
+                        username: user.email,
+                        competitions: competitions,
+                        athletics: competitionTypes,
+                        results: runResults,
+                        admin: admin,
+                        judge: judge,
+                        agent: agent
+                    });
+                }).catch(() => {
+                    res.sendStatus(500);
                 });
             }).catch(() => {
                 res.sendStatus(500);
@@ -36,7 +40,7 @@ exports.get = function(req, res) {
             res.sendStatus(500);
         });
     }  
-}
+};
 
 exports.checkAthletics = function(req, res) {
     var user = req.user;
@@ -59,6 +63,6 @@ exports.checkAthletics = function(req, res) {
         });
 
     }
-}
+};
 
            

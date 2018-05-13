@@ -46,7 +46,7 @@ exports.changeAgentAthleteCard = athleteCardDb.changeAgentAthleteCard;
 exports.deleteAgentAthleteCard = athleteCardDb.deleteAgentAthleteCard;
 exports.getCardAthletics = athleteCardDb.getCardAthletics;
 
-/* -------------- Athlete -------------- */
+/* -------------- Run -------------- */
 
 var runDb = require('./runDb');
 

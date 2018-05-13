@@ -282,6 +282,41 @@
 		checkTypes();
 	});
 
+    //Get Results 
+    function getResults() {
+        var request = {};
+
+        request.competition_type = $('#athleticsType').val();
+
+        console.log(request);
+
+        $.ajax({
+            url: "/" + pageName + "results",
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json",
+            data: JSON.stringify(request),
+            success: function(data, textStatus, xhr){
+                if(xhr.status == '200')  {
+
+                    $('#table tbody').empty();
+                    var results = data.results;
+                    console.log(results);
+                    var i;
+                    for(i = 0; i < results.length; i++) {
+                        $("#table tbody").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + " - " + athletics[i].gender_type.gender_type +"</option>'"));
+                    }
+                }
+            },
+            complete: function(xhr, textStatus) {
+                if (xhr.status == '500') {
+                    console.log('Options err: ');
+                    console.log(xhr);
+                }
+            }
+        });
+    }
+
 	// Check competition types
 	function checkTypes(){
 		var request = {};
