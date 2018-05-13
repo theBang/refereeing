@@ -51,7 +51,7 @@ exports.changeOrganization = function (params, change_id) {
 };
 
 // DELETE Organization
-exports.deleteCompetition = function (delete_id) {
+exports.deleteOrganization = function (delete_id) {
     return functions.deleteObjectById(models.organization, delete_id);
 };
 
@@ -65,22 +65,52 @@ exports.getUsers = function(){
 /* -------------- Genders -------------- */
 
 exports.getGenders = function(){
+    return functions.getObjects(models.gender_type);
+};
+
+exports.getAdminGenders = function(){
     return functions.getObjects(models.gender);
 };
 
+// ADD Gender
 exports.addGender = function(params) {
-    models.gender.create({
-        gender: params[1]
-    }).then(gender => {
-        console.log('++++++++++++++++++++++++++++++');
-        console.log(gender);
-        if (gender) {
-            resolve(gender);
-        }
-        reject({});
-    }).catch(()=> {
-        reject({});
+    return new Promise ((resolve, reject) => {
+        models.gender.create({
+            gender: params[1]
+        }).then(gender => {
+            if (gender) {
+                resolve(gender);
+            }
+            reject({});
+        }).catch(() => {
+            reject({});
+        });
     });
+};
+
+// CHANGE Gender
+exports.changeGender = function (params, change_id) {
+    return new Promise ((resolve, reject) => {
+        models.gender.update({
+            gender: params[1]
+        }, {
+            where: {
+                id: change_id
+            }
+        }).then(() => models.gender.findById(change_id)).then(gender => {
+            if (gender) {
+                resolve(gender);
+            }
+            reject({});
+        }).catch(()=> {
+            reject({});
+        });
+    });
+};
+
+// DELETE Gender
+exports.deleteGender = function (delete_id) {
+    return functions.deleteObjectById(models.gender, delete_id);
 };
 
 exports.getCities = function(){

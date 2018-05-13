@@ -64,9 +64,14 @@ exports.changeOrganization = otherDb.changeOrganization;
 exports.deleteCompetition = otherDb.deleteCompetition;
 exports.getOrgById = otherDb.getOrgById;
 
+/* -------------- Genders -------------- */
+
 exports.getGenders = otherDb.getGenders;
+exports.getAdminGenders = otherDb.getAdminGenders;
 exports.getGenderById = otherDb.getGenderById;
 exports.addGender = otherDb.addGender;
+exports.changeGender = otherDb.changeGender;
+exports.deleteGender = otherDb.deleteGender;
 
 exports.getCities = otherDb.getCities;
 exports.getCityById = otherDb.getCityById;

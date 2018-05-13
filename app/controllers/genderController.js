@@ -14,7 +14,7 @@ exports.get = function(req, res) {
 
     if (admin) {
         tableHead = ['ID', 'Пол'];
-        db.getGenders().then(genders => {
+        db.getAdminGenders().then(genders => {
             res.render('genders.hbs', {
                 title: 'Пол',
                 tableHead: tableHead,
@@ -47,8 +47,7 @@ exports.change = function(req, res) {
     if(role == 'admin') { admin = true; }
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
-    console.log('-------------------------           ' + req.body.id);
-    if (agent) { returnAthlete(db.changeAthlete(req.body.object, req.body.id, user.id), res); }
+    if (admin) { returnGender(db.changeGender(req.body.object, req.body.id), res); }
 
 };
 
@@ -59,8 +58,8 @@ exports.delete = function(req, res) {
     if(role == 'admin') { admin = true; }
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
-    if (agent) {
-        db.deleteAthlete(req.body.id, user.id).then(deleted => {
+    if (admin) {
+        db.deleteGender(req.body.id).then(deleted => {
             if (deleted) {
                 res.status(200);
                 res.setHeader("Content-Type", "application/json");
@@ -76,8 +75,6 @@ exports.delete = function(req, res) {
 
 function returnGender(genderPromise, res) {
     genderPromise.then(gender => {
-        console.log('--------------------------------------------------');
-        console.log(gender);
         if (gender) {
             console.log(gender);
             var data = {
