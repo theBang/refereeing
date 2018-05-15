@@ -12,29 +12,12 @@
                     <form id="my_form">
                     <div class="form-group">
                     <legend class="m-b-1">Добавить вид на соревнованиях</legend>
-                        <div class="form-group">               
-                            <label for="competition">Соревнования</label>  
-                            <select class="form-control competition">
-                                                                
-                            </select>                    
-                        
-                            <label for="type">Вид</label>  
-                            <select class="form-control type">
-                                                                   
-                            </select>
-                            <label for="gender">Пол</label>  
-                            <select class="form-control gender">
-                             
-                            </select>
-                           
-                            <label for="qualification">Квалификация</label>
-                            <select class="form-control qualification">
-                    
-                            </select>   
+                        <div class="form-group">
+                            <label for="result">Результат</label>
+                            <input class="form-control" id="result" type="time" step="1"/>
                         </div>    
                     </div>
-                            <input class = "btn btn-primary" id="addRow" type="button" value="Добавить"/>
-                            <input class = "btn btn-primary" id="changeRow" type="button" value="Изменить" />
+                            <input class = "btn btn-primary" id="changeResult" type="button" value="Сохранить" />
                             <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена"/>
                     </form>
             </div> 
@@ -72,22 +55,16 @@
                                 </thead>
                                 <tbody>
                                 {{#each results}}
-                                    <tr data-id="{{this.run_result.id}}">
-                                        <td>{{this.number}}</td>
-                                        <td>{{this.run_result.track}}</td>
-                                        <td>{{this.run_result.athlete_card.athlete.lastname}}</td>
+                                    <tr data-id="{{this.id}}">
+                                        <td>{{this.run.number}}</td>
+                                        <td>{{this.track}}</td>
+                                        <td>{{this.athlete_card.athlete.last_name}} {{this.athlete_card.athlete.first_name}} {{this.athlete_card.athlete.middle_name}}</td>
+                                        <td>{{this.result}}</td>
                                         <td>
-                                            <button class="btn btn-primary changeRow">Изменить</button>
-                                            <button class="btn btn-danger deleteRow">Удалить</button>
+                                            <button class="btn btn-primary changeResult">Результат</button>
                                         </td>
                                     </tr>
                                 {{/each}}
-                                <tr class="showDataForm">
-                                    <td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -42,8 +42,11 @@
 				break;				
 			case 'change':
 				$('#changeRow, #cancleButton').css('display','inline');
-				break;			
-		}		
+				break;
+            case 'result':
+                $('#changeResult, #cancleButton').css('display','inline');
+                break;
+        }
 	}	
 	
 	
@@ -260,7 +263,7 @@
 
 	var closeFormFunction = function(){	
 		$('#dataform-wrapper').hide();			
-		$('#overlay, #dataForm, #addRow, #cancleButton, #changeRow').css('display','none');
+		$('#overlay, #dataForm, #addRow, #cancleButton, #changeRow, #changeResult').css('display','none');
 		$inputs.each(function(){
 			$(this).val($(this).attr('defaultValue'));
 		});
@@ -276,11 +279,20 @@
 
 	$('#competitionsSelect').on('change', function () {
 		checkTypes();
+        if (pageName == 'run') {
+            getResults();
+        }
 	});
 
 	$('#athleteSelect').on('change', function () {
 		checkTypes();
 	});
+
+    $('#athleticsType').on('change', function () {
+        if (pageName == 'run') {
+            getResults();
+        }
+    });
 
     //Get Results 
     function getResults() {
@@ -304,8 +316,21 @@
                     console.log(results);
                     var i;
                     for(i = 0; i < results.length; i++) {
-                        $("#table tbody").append( $("<option value= '" + athletics[i].id + "'>" + athletics[i].athletics_type.name + " - " + athletics[i].gender_type.gender_type +"</option>'"));
+                        $("#table tbody").append( $('<tr data-id="' + results[i].id + '">\n' +
+                            '\t<td>' + results[i].run.number + '</td>\n' +
+                            '\t<td>' + results[i].track + '</td>\n' +
+                            '\t<td>' + results[i].athlete_card.athlete.last_name + ' ' + results[i].athlete_card.athlete.first_name + ' ' +
+                            results[i].athlete_card.athlete.middle_name + '</td>\n' +
+                            '\t<td>' + results[i].result + '</td>\n' +
+                            '\t<td>\n<button class = "btn btn-primary changeResult">Результат</button>\n</td>\n' +
+                            '</tr>'));
                     }
+                    /*$("#table tbody").append( $('<tr class="showDataForm">\n' +
+                        '\t<td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>\n' +
+                        '\t<td></td>\n' +
+                        '\t<td></td>\n' +
+                        '\t<td></td>\n' +
+                        '</tr>'));*/
                 }
             },
             complete: function(xhr, textStatus) {
@@ -442,6 +467,41 @@
 			} 				
 		});
 	});
+
+    //Change result in run results
+    $("#table").on("click", ".changeResult", function(){
+
+        $changedRow = $(this).parents("tr");
+        var $rowId = $changedRow.attr("data-id");
+        $rowCells = $changedRow.children("td");
+        var $result = $rowCells[$rowCells.length - 2];
+
+        $result.textContent = 1;
+        //$('#result').val('11:11');
+        console.log($('#result').val());
+        showDataForm('result');
+
+        /*var inputData = { id: $rowId , result: $result};
+        console.log(inputData);
+
+        $.ajax({
+            url: "/" + pageName,
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json",
+            data: JSON.stringify(inputData),
+            success: function(data, textStatus, xhr){
+                if(xhr.status == '200')  {
+                    $changedRow.remove();
+                }
+            },
+            complete: function(xhr, textStatus) {
+                if (xhr.status == '500') {
+                    alert("Произошла ошибка при удалении!");
+                }
+            }
+        });*/
+    });
 	
 
 //Скрипт для изменения строки в таблице

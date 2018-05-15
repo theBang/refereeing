@@ -89,6 +89,16 @@ db.try_result = require('./try_result')(sequelize, Sequelize);
 db.try_result.belongsTo(db.athlete_card, {foreignKey: 'athlete_card_id'});
 db.try_result.belongsTo(db.try, {foreignKey: 'try_id'});
 
+// ---------- Final Protocol --------------
+db.final_protocol = require('./final_protocol')(sequelize, Sequelize);
+db.final_protocol.belongsTo(db.run_result, {foreignKey: 'run_result_id'});
+
+// ---------- Start Protocol --------------
+db.start_protocol = require('./start_protocol')(sequelize, Sequelize);
+
+// ---------- News --------------
+db.news = require('./news')(sequelize, Sequelize);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
