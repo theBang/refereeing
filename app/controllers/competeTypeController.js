@@ -32,7 +32,7 @@ exports.get = function(req, res) {
             });
             
             res.render('competition_type.hbs', {
-                title: 'Вид на соревнованиях',
+                title: 'Виды на соревнованиях',
                 tableHead: tableHead,
                 competitionTypes: outCompetitionTypes,
                 username: user.email,

@@ -316,12 +316,18 @@
                     console.log(results);
                     var i;
                     for(i = 0; i < results.length; i++) {
+                        var time;
+                        if(!results[i].result) {
+                            time = '';
+                        } else {
+                            time = results[i].result.substr(11, 12);
+                        }
                         $("#table tbody").append( $('<tr data-id="' + results[i].id + '">\n' +
                             '\t<td>' + results[i].run.number + '</td>\n' +
                             '\t<td>' + results[i].track + '</td>\n' +
-                            '\t<td>' + results[i].athlete_card.athlete.last_name + ' ' + results[i].athlete_card.athlete.first_name + ' ' +
-                            results[i].athlete_card.athlete.middle_name + '</td>\n' +
-                            '\t<td>' + results[i].result + '</td>\n' +
+                            '\t<td>' +results[i].athlete_card.athlete.last_name + ' ' + results[i].athlete_card.athlete.first_name[0] + '. ' +
+                            results[i].athlete_card.athlete.middle_name[0] + '.' + '</td>\n' +
+                            '\t<td>' + time + '</td>\n' +
                             '\t<td>\n<button class = "btn btn-primary changeResult">Результат</button>\n</td>\n' +
                             '</tr>'));
                     }
@@ -470,37 +476,68 @@
 
     //Change result in run results
     $("#table").on("click", ".changeResult", function(){
-
         $changedRow = $(this).parents("tr");
         var $rowId = $changedRow.attr("data-id");
         $rowCells = $changedRow.children("td");
         var $result = $rowCells[$rowCells.length - 2];
 
-        $result.textContent = 1;
+        //$result.textContent = '11:11';
         //$('#result').val('11:11');
-        console.log($('#result').val());
+
+        if ($result.textContent) {
+            $('#result').val($result.textContent)
+        }
         showDataForm('result');
 
-        /*var inputData = { id: $rowId , result: $result};
-        console.log(inputData);
+        $('#saveResult').unbind();
 
-        $.ajax({
-            url: "/" + pageName,
-            type: "POST",
-            dataType: 'json',
-            contentType: "application/json",
-            data: JSON.stringify(inputData),
-            success: function(data, textStatus, xhr){
-                if(xhr.status == '200')  {
-                    $changedRow.remove();
-                }
-            },
-            complete: function(xhr, textStatus) {
-                if (xhr.status == '500') {
-                    alert("Произошла ошибка при удалении!");
-                }
+		$changedRow = $(this).parents("tr");
+		$rowCells = $changedRow.attr("data-id");;
+
+		$('#saveResult').bind('click', function(){
+            if($('#result').val()) {
+
+                var date = new Date();
+                var result = $('#result').val();
+                var times = result.split(':');
+                var allSeconds = times[2].split('.');
+
+                date.setUTCHours(times[0], times[1], allSeconds[0], allSeconds[1]);
+
+                console.log(date.toISOString().substr(11, 12));
+
+                var inputData = {
+                    id: $rowId,
+                    result: date
+                };
+
+                console.log(inputData);
+                console.log("/" + pageName + "result");
+
+                $.ajax({
+                    url: "/" + pageName + "result",
+                    type: "PUT",
+                    dataType: 'json',
+                    contentType: "application/json",
+                    data: JSON.stringify(inputData),
+                    success: function(data, textStatus, xhr){
+                        if(xhr.status == '200')  {
+                            $result.textContent = data.result;
+                            closeFormFunction();
+                        }
+                    },
+                    complete: function(xhr, textStatus) {
+                        if (xhr.status == '500') {
+                            console.log(xhr);
+                            alert("Произошла ошибка при изменении!");
+                        }
+                    }
+
+                });
+			} else {
+                alert("Произошла ошибка при изменении!");
             }
-        });*/
+		})
     });
 	
 

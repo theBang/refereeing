@@ -11,13 +11,13 @@
             <div id="dataForm">
                     <form id="my_form">
                     <div class="form-group">
-                    <legend class="m-b-1">Добавить вид на соревнованиях</legend>
+                    <legend class="m-b-1">Добавить результат</legend>
                         <div class="form-group">
                             <label for="result">Результат</label>
-                            <input class="form-control" id="result" type="time" step="1"/>
+                            <input class="form-control" id="result" type="time" step="0.5"/>
                         </div>    
                     </div>
-                            <input class = "btn btn-primary" id="changeResult" type="button" value="Сохранить" />
+                            <input class = "btn btn-primary" id="saveResult" type="button" value="Сохранить" />
                             <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена"/>
                     </form>
             </div> 
@@ -27,23 +27,23 @@
         <div id="wrapper">            
             {{> table_nav}}
             <div id="page-content-wrapper">
-                <label for="competition">Соревнования</label>  
-                <select class="form-control competition" id="competitionsSelect">
-                    {{#each competitions}}
-                        <option value="{{this.id}}">{{this.name}}</option>
-                    {{/each}}                                    
-                </select>                    
-                <label for="type">Вид</label>  
-                <select class="form-control type"  id="athleticsType">
-                    {{#each athletics}}
-                        <option value="{{this.id}}">{{this.athletics_type.name}} - {{this.gender_type.gender_type}}</option>
-                    {{/each}}                          
-                </select>
                 <div class="container-fluid">
-                    <h1>{{title}}</h1>
-                    <p>Спортсмены</p>     
-                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Приступить к редактированию</a>
+                    <h1>{{title}}</h1> 
+                    
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Другие данные</a><br>
                     <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                        <label for="competition">Соревнования</label>  
+                        <select class="form-control competition" id="competitionsSelect">
+                            {{#each competitions}}
+                                <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}                                    
+                        </select>                    
+                        <label for="type">Вид</label>  
+                        <select class="form-control type"  id="athleticsType">
+                            {{#each athletics}}
+                                <option value="{{this.id}}">{{this.athletics_type.name}} - {{this.gender_type.gender_type}}</option>
+                            {{/each}}                          
+                        </select>
                         <div class="div-table">
                             <table class="table table-hover"  id = "table">
                                 <thead>
@@ -56,9 +56,9 @@
                                 <tbody>
                                 {{#each results}}
                                     <tr data-id="{{this.id}}">
-                                        <td>{{this.run.number}}</td>
+                                        <td>{{this.run}}</td>
                                         <td>{{this.track}}</td>
-                                        <td>{{this.athlete_card.athlete.last_name}} {{this.athlete_card.athlete.first_name}} {{this.athlete_card.athlete.middle_name}}</td>
+                                        <td>{{this.name}}</td>
                                         <td>{{this.result}}</td>
                                         <td>
                                             <button class="btn btn-primary changeResult">Результат</button>

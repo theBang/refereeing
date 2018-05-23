@@ -45,3 +45,23 @@ exports.getCompetitionTypesResults = function (competition_type_id) {
       });
   });
 };
+
+exports.changeOnlyResult = function (id, result) {
+    return new Promise((resolve, reject) => {
+        models.run_result.update({
+            result: result
+        }, {
+            where: {
+                id: id
+            }
+        }).then(() => models.run_result.findById(id)).then(runResult => {
+            if (runResult) {
+                resolve(runResult.result);
+            }
+            reject('');
+        }).catch(()=> {
+            reject('');
+        });
+    });
+};
+

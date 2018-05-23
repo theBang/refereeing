@@ -41,7 +41,13 @@ exports.getAthleteCards = function(){
             models.athlete_card.findAll({
                 include: [
                     { model: models.athlete},
-                    //{ model: models.athletics_type },
+                    { model: models.competition_type, 
+                        include: [
+                            { model: models.athletics_type },
+                            { model: models.gender_type },
+                            { model: models.competition }
+                        ] 
+                    },
                     { model: models.rank },
                     { model: models.appearence }
                 ]

@@ -41,18 +41,18 @@ module.exports = function(passport, user, organization) {
                             password: userPassword,
                             firstname: req.body.firstname,
                             lastname: req.body.lastname,
-                            role: 'admin'
+                            role: 'agent'
                         };
  
                     User.create(data).then(function(newUser, created) {
                         if (!newUser) return done(null, false); 
                         if (newUser) {
-                           /*Organization.create({
+                           Organization.create({
                                 name: req.body.organization,
-                                user_id: newUser.id*/
-                            //}).then(org => {
+                                user_id: newUser.id
+                            }).then(org => {
                                 return done(null, newUser);
-                           //});
+                           });
                         }
                     });
                 }

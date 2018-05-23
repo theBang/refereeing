@@ -22,7 +22,7 @@ exports.get = function(req, res) {
                     id: athleteCard.id,
                     competition: athleteCard.competition_type.competition.name,
                     athlete: athleteCard.athlete.last_name + " " + athleteCard.athlete.first_name.charAt(0) + "." + athleteCard.athlete.middle_name.charAt(0) + ".",
-                    athletics: athleteCard.competition_type.athletics_type.name,
+                    athletics: athleteCard.competition_type.athletics_type.name + " - " + athleteCard.competition_type.gender_type.gender_type ,
                     result: athleteCard.current_result,
                     rank: athleteCard.rank.name
                 });

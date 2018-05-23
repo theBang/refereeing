@@ -51,6 +51,7 @@ exports.getCardAthletics = athleteCardDb.getCardAthletics;
 var runDb = require('./runDb');
 
 exports.getCompetitionTypesResults = runDb.getCompetitionTypesResults;
+exports.changeOnlyResult = runDb.changeOnlyResult;
 
 /* -------------- Other Models -------------- */
 
