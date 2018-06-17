@@ -199,12 +199,10 @@
 							$('.competition').empty();
 							$('.type').empty();
 							$('.gender').empty();
-							$('.qualification').empty();
 							//селект соревнований
 							var competitions = data.competitions;
 							var types = data.athletics;
 							var genders = data.genders;
-							var qualifications = data.qualifications;
 
 							console.log(data);
 
@@ -238,16 +236,6 @@
 
 								$(".gender").append( $("<option value= '" + genders[i].id + "'" + selected + ">" + genders[i].gender_type + "</option>'"));
 							}
-
-							for(i = 0; i < qualifications.length; i++) {		
-								if (setValue && setValue[3] == qualifications[i].name) { 
-									selected = ' selected '; 
-								} else { 
-									selected = ''; 
-								}	
-
-								$(".qualification").append( $("<option value= '" + qualifications[i].bool + "'" + selected + ">" + qualifications[i].name + "</option>'"));
-							}
 						}
 					}
 				},
@@ -275,8 +263,6 @@
 		showDataForm('add');
 	});
 
-	
-
 	$('#competitionsSelect').on('change', function () {
 		checkTypes();
         if (pageName == 'run') {
@@ -292,7 +278,56 @@
         if (pageName == 'run') {
             getResults();
         }
-    });
+	});
+	
+	$('#startFinal').click(function(){
+		request.competition_type = $('#athleticsType').val();
+		console.log(request);
+		$.ajax({
+            url: "/" + pageName + "final",
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json",
+            data: JSON.stringify(request),
+            success: function(data, textStatus, xhr){
+                if(xhr.status == '200')  {
+
+                    $('#table tbody').empty();
+					var results = data.results;
+                    console.log(results);
+                    var i;
+                    for(i = 0; i < results.length; i++) {
+                        var time;
+                        if(!results[i].result) {
+                            time = '';
+                        } else {
+                            time = results[i].result.substr(11, 12);
+                        }
+                        $("#table-final tbody").append( $('<tr data-id="' + results[i].id + '">\n' +
+                            '\t<td>' + results[i].run.number + '</td>\n' +
+                            '\t<td>' + results[i].track + '</td>\n' +
+                            '\t<td>' +results[i].athlete_card.athlete.last_name + ' ' + results[i].athlete_card.athlete.first_name[0] + '. ' +
+                            results[i].athlete_card.athlete.middle_name[0] + '.' + '</td>\n' +
+                            '\t<td>' + time + '</td>\n' +
+                            '\t<td>\n<button class = "btn btn-primary changeResult">Результат</button>\n</td>\n' +
+                            '</tr>'));
+                    }
+                    /*$("#table tbody").append( $('<tr class="showDataForm">\n' +
+                        '\t<td><button class="btn btn-primary showDataForm" id="showDataForm">Добавить</button></td>\n' +
+                        '\t<td></td>\n' +
+                        '\t<td></td>\n' +
+                        '\t<td></td>\n' +
+                        '</tr>'));*/
+                }
+            },
+            complete: function(xhr, textStatus) {
+                if (xhr.status == '500') {
+                    console.log('Options err: ');
+                    console.log(xhr);
+                }
+            }
+        });
+	});
 
     //Get Results 
     function getResults() {
@@ -312,7 +347,7 @@
                 if(xhr.status == '200')  {
 
                     $('#table tbody').empty();
-                    var results = data.results;
+					var results = data.results;
                     console.log(results);
                     var i;
                     for(i = 0; i < results.length; i++) {

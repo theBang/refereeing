@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+
+    <title>{{title}}</title>
+    </head>
+    <body>
+        {{> menu_signed}}
+        <div id="dataform-wrapper">
+            <div id="dataForm">
+                    <form id="my_form">
+                    <div class="form-group">
+                    <legend class="m-b-1">Добавить результат</legend>
+                        <div class="form-group">
+                            <label for="result">Результат</label>
+                            <input class="form-control" id="result" type="time" step="0.5"/>
+                            <label for="dis">Дисквалификация</label>
+                            <input id="dis" type="checkbox"/>
+                        </div>    
+                    </div>
+                            <input class = "btn btn-primary" id="saveResult" type="button" value="Сохранить" />
+                            <input class = "btn btn-secondary" id="cancelButton" type="button" value="Отмена"/>
+                    </form>
+            </div> 
+        </div> 
+
+        <div id="overlay"></div>
+        <div id="wrapper">            
+            {{> table_nav}}
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <h1>{{title}}</h1> 
+                    
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Другие данные</a><br>
+                    <div style="width: 40%">
+                        <label for="competition">Соревнования</label>  
+                        <select class="form-control competition" id="competitionsSelect">
+                           <option value="">Областное первенство</option>                                      
+                        </select>                    
+                        <label for="type">Вид</label>  
+                        <select class="form-control type"  id="athleticsType">
+                            <option value="">Прыжок в высоту - Женщины</option>                       
+                        </select>
+                        <div style="margin: 10px auto;">
+                            <button class="btn btn-primary startFinal">Начать финал</button>
+                        </div>
+                    </div>
+                    <div style="width: 80%; position:absolute; left:5%; margin-top:30px"></div>
+                        <div class="div-table" style="display:inline-block; width: 50%">
+                            <h3>Квалификация</h3>
+                            <table class="table table-hover"  id = "table-final">
+                                <thead>
+                                    <tr>
+                                        <th>Позиция</th>
+                                        <th>Спортсмен</th>
+                                        <th>Попытка 1</th>
+                                        <th>Попытка 2</th>
+                                        <th>Попытка 3</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Ляпунова А. П.</td>
+                                        <td>1.67</td>
+                                        <td>1.70</td>
+                                        <td>1.69</td>                        
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Абарина К. Л.</td>
+                                        <td>1.65</td>
+                                        <td>1.66</td>
+                                        <td>1.66</td>                        
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Симина С. С.</td>
+                                        <td>1.63</td>
+                                        <td>1.65</td>
+                                        <td>1.65</td>                        
+                                       
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Малева Е. В.</td>
+                                        <td>1.61</td>
+                                        <td>1.63</td>
+                                        <td>1.65</td>                      
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Ануфриева Л. Р.</td>
+                                        <td>1.59</td>
+                                        <td>1.61</td>
+                                        <td>1.62</td>                         
+                                        
+                                    </tr>    
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Иметова Р. Е.</td>
+                                        <td>1.67</td>
+                                        <td>1.68</td>
+                                        <td>1.69</td>                        
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Амус П. П.</td>
+                                        <td>1.68</td>
+                                        <td>1.68</td>
+                                        <td>1.68</td>                        
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Егорова Е. К.</td>
+                                        <td>1.55</td>
+                                        <td>1.57</td>
+                                        <td>1.59</td>                         
+                                       
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>Масина В. И.</td>
+                                        <td>1.53</td>
+                                        <td>1.54</td>
+                                        <td>1.56</td>                    
+                            
+                                    </tr>                   
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="div-table" style="margin-left: 50px; display:inline-block; width: 45%">
+                            <h3>Финал</h3>
+                            <table class="table table-hover"  id = "table-final">
+                                <thead>
+                                    <tr>
+                                    
+                                        <th>Позиция</th>
+                                        <th>Спортсмен</th>
+                                        <th>Попытка 4</th>
+                                        <th>Попытка 5</th>
+                                        <th>Попытка 6</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Ляпунова А. П.</td>
+                                        <td>1.70</td>
+                                        <td>1.72</td>
+                                        <td>1.74</td>                        
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Иметова Р. Е.</td>
+                                        <td>1.70</td>
+                                        <td>1.71</td>
+                                        <td>1.72</td>                        
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Амус П. П.</td>
+                                        <td>1.68</td>
+                                        <td>1.70</td>
+                                        <td>1.70</td>                        
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Абарина К. Л.</td>
+                                        <td>1.67</td>
+                                        <td>1.68</td>
+                                        <td>1.69</td>                        
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Симина С. С.</td>
+                                        <td>1.65</td>
+                                        <td>1.67</td>
+                                        <td>1.68</td>                        
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Малева Е. В.</td>
+                                        <td>1.63</td>
+                                        <td>1.63</td>
+                                        <td>1.65</td>                      
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Ануфриева Л. Р.</td>
+                                        <td>1.62</td>
+                                        <td>1.63</td>
+                                        <td>1.64</td>                         
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>    
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Егорова Е. К.</td>
+                                        <td>1.58</td>
+                                        <td>1.58</td>
+                                        <td>1.60</td>                         
+                                        <td>
+                                            <button class="btn btn-primary changeResult">Результат</button>
+                                        </td>
+                                    </tr>                                               
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>            
+            </div>                            
+        {{> script}}
+    </body>
+</html>

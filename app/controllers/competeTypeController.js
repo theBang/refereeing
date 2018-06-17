@@ -10,24 +10,17 @@ exports.get = function(req, res) {
     if(role == 'judge') { judge = true; }
     if(role == 'agent') { agent = true; }
 
-    var tableHead = ['Соревнование', 'Вид', 'Пол', 'Квалификация', 'Действие'];
+    var tableHead = ['Соревнование', 'Вид', 'Пол', 'Действие'];
 
     if(judge) {
         db.getCompetitionTypes().then(competitionTypes => {
             var outCompetitionTypes = [];
             competitionTypes.forEach(competitionType => {
-                let qualification;
-                if (competitionType.qualification) {
-                    qualification = 'Есть';
-                } else {
-                    qualification = 'Нет'
-                }
                 outCompetitionTypes.push({
                     id: competitionType.id,
                     competition: competitionType.competition.name,
                     athletics: competitionType.athletics_type.name,
-                    gender: competitionType.gender_type.gender_type,
-                    qualification: qualification
+                    gender: competitionType.gender_type.gender_type
                 });
             });
             
@@ -60,16 +53,6 @@ exports.getOptions = function(req, res) {
             db.getGenders().then(genders => {
                 db.getAthleticsTypes().then(athletics => {
                     var data = {};
-                    data.qualifications = [
-                        {
-                            bool: true,
-                            name: 'Есть'
-                        },
-                        {
-                            bool: false,
-                            name: 'Нет'
-                        }
-                    ]
                     data.competitions = competitions;
                     data.genders = genders;
                     data.athletics = athletics;
@@ -140,19 +123,12 @@ function returnCompetitionType(competitionTypePromise, res) {
             db.getAthleticsTypeById(competitionType.athletics_type_id).then(athletic => {
                 db.getGenderById(competitionType.gender_type_id).then(gender => {
                     if (competitionType) {
-                        let qualification;
-                        if (competitionType.qualification) {
-                            qualification = 'Есть';
-                        } else {
-                            qualification = 'Нет'
-                        }
                         var data = {
                             id: competitionType.id,
                             row: [
                                 competition.name,
                                 athletic.name,
-                                gender.gender_type,
-                                qualification,
+                                gender.gender_type
                             ]
                         };
                         res.status(200);
